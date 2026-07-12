@@ -1,0 +1,26 @@
+#pragma kernel reconstruct
+
+struct pc_point {
+    float3 world;
+    uint id;
+};
+
+Texture2D<float4> id_map; // R = id, G = NDC depth
+StructuredBuffer<float2> pattern; // per-ray NDC xy
+RWStructuredBuffer<pc_point> pc;
+float4x4 inv_vp; // inverse(GPU LiDAR view-projection)
+uint count;
+uint res;
+
+[numthreads(64, 1, 1)]
+void reconstruct(uint3 tid : SV_DispatchThreadID) {
+    uint i = tid.x;
+    if (i < count) {
+        float2 ndc = pattern[i];
+        int2 px = int2((ndc * 0.5 + 0.5) * res);
+        float4 s = id_map.Load(int3(px, 0));
+        float4 wh = mul(inv_vp, float4(ndc, s.g, 1.0)); // (ndc.xy, ndc depth) -> world
+        pc[i].world = wh.xyz / wh.w;
+        pc[i].id = (uint) round(s.r);
+    }
+}

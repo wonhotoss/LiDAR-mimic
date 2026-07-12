@@ -1,0 +1,126 @@
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.RenderGraphModule;
+
+namespace LiDARMimic {
+    // LiDAR camera: writes per-object id + NDC depth into id_rt.
+    // Other cameras: draws the reconstructed pc_buffer as fixed-size point splats into the main target.
+    public class lidar_render_feature : ScriptableRendererFeature {
+        public Shader write_shader;
+        public Shader point_shader;
+        public float depth_bias = 0.0002f; // sign is platform-dependent; flip if points are hidden by their own surface
+
+        Material write_mat;
+        Material point_mat;
+        ComputeBuffer style_buffer;
+        id_pass id;
+        point_pass points;
+
+        public override void Create() {
+            write_mat = CoreUtils.CreateEngineMaterial(write_shader);
+            point_mat = CoreUtils.CreateEngineMaterial(point_shader);
+            id = new id_pass(write_mat) { renderPassEvent = RenderPassEvent.AfterRenderingOpaques };
+            points = new point_pass { renderPassEvent = RenderPassEvent.AfterRenderingOpaques };
+        }
+
+        public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData data) {
+            if (data.cameraData.camera.GetComponent<lidar>() != null) {
+                renderer.EnqueuePass(id);
+            } else {
+                var device = lidar_registry.devices.FirstOrDefault();
+                if (device != null && device.points != null) {
+                    point_mat.SetBuffer("pc", device.points);
+                    point_mat.SetBuffer("style", build_style());
+                    point_mat.SetFloat("depth_bias", depth_bias);
+                    points.setup(point_mat, device.point_count);
+                    renderer.EnqueuePass(points);
+                }
+            }
+        }
+
+        protected override void Dispose(bool disposing) {
+            CoreUtils.Destroy(write_mat);
+            CoreUtils.Destroy(point_mat);
+            style_buffer?.Release();
+        }
+
+        // Per-id style buffer (index = id): rgb = color, w = size in pixels. Rebuilt from the active receivers.
+        ComputeBuffer build_style() {
+            var receivers = lidar_receiver_registry.receivers;
+            var max_id = receivers.Count > 0 ? receivers.Max(r => r.id) : 0;
+            var styles = new Vector4[max_id + 1];
+            foreach (var r in receivers) {
+                styles[r.id] = new Vector4(r.color.r, r.color.g, r.color.b, r.size);
+            }
+            if (style_buffer == null || style_buffer.count != styles.Length) {
+                style_buffer?.Release();
+                style_buffer = new ComputeBuffer(styles.Length, sizeof(float) * 4);
+            }
+            style_buffer.SetData(styles);
+            return style_buffer;
+        }
+
+        class id_pass : ScriptableRenderPass {
+            static readonly ShaderTagId forward = new("UniversalForward");
+            Material mat;
+
+            public id_pass(Material m) {
+                mat = m;
+            }
+
+            class data {
+                public RendererListHandle list;
+            }
+
+            public override void RecordRenderGraph(RenderGraph graph, ContextContainer frame) {
+                var resources = frame.Get<UniversalResourceData>();
+                var cam = frame.Get<UniversalCameraData>();
+                var render = frame.Get<UniversalRenderingData>();
+
+                var sort = new SortingSettings(cam.camera) { criteria = SortingCriteria.CommonOpaque };
+                var draw = new DrawingSettings(forward, sort) { overrideMaterial = mat, overrideMaterialPassIndex = 0 };
+                var filter = new FilteringSettings(RenderQueueRange.opaque);
+                var list = graph.CreateRendererList(new RendererListParams(render.cullResults, draw, filter));
+
+                using (var builder = graph.AddRasterRenderPass<data>("lidar_id", out var d)) {
+                    d.list = list;
+                    builder.UseRendererList(list);
+                    builder.SetRenderAttachment(resources.activeColorTexture, 0);
+                    builder.SetRenderAttachmentDepth(resources.activeDepthTexture);
+                    builder.SetRenderFunc((data x, RasterGraphContext ctx) => ctx.cmd.DrawRendererList(x.list));
+                }
+            }
+        }
+
+        class point_pass : ScriptableRenderPass {
+            Material mat;
+            int count;
+
+            public void setup(Material m, int n) {
+                mat = m;
+                count = n;
+            }
+
+            class data {
+                public Material mat;
+                public int count;
+            }
+
+            public override void RecordRenderGraph(RenderGraph graph, ContextContainer frame) {
+                var resources = frame.Get<UniversalResourceData>();
+
+                using (var builder = graph.AddRasterRenderPass<data>("lidar_points", out var d)) {
+                    d.mat = mat;
+                    d.count = count;
+                    builder.SetRenderAttachment(resources.activeColorTexture, 0);
+                    builder.SetRenderAttachmentDepth(resources.activeDepthTexture);
+                    builder.AllowPassCulling(false);
+                    builder.SetRenderFunc((data x, RasterGraphContext ctx) =>
+                        ctx.cmd.DrawProcedural(Matrix4x4.identity, x.mat, 0, MeshTopology.Triangles, 6 * x.count));
+                }
+            }
+        }
+    }
+}

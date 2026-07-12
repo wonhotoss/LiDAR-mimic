@@ -24,7 +24,7 @@
 - PC 집합 판정: `(1u << id) & pcMask` 비트마스크(오브젝트 ≤ 32/64/128) 또는 `isPC[id]` 룩업 버퍼.
   포인트마다 목록 루프 금지.
 - 오브젝트 종류: **normal-only**(컴포넌트 없음) / **both**(일반 렌더 + 컴포넌트) /
-  **pc-only**(컴포넌트 + `Renderer.forceRenderingOff`로 메인에서 숨김, 라이다 패스엔 그려짐).
+  **pc-only**(컴포넌트 + **전용 레이어**로 메인 카메라 cullingMask에서 제외; 라이다 카메라는 포함해 계속 그림 → id·점 생성).
 
 ## 2. 패스 순서 (ScriptableRendererFeature)
 1. **LiDAR 패스**(depth + ID) → **compute 재구성** — 메인 opaque 이전.
@@ -32,11 +32,12 @@
 3. **통합 패스**(포인트 드로우) — opaque 이후, 메인 color+depth 타겟에 직접.
 
 ## 3. LiDAR 패스 (두 번째 뷰)
-- 결정: 별도 Camera 대신 **수동 컬링** — `ScriptableCullingParameters`를 라이다 view-proj로 구성 후
-  `RendererList`로 렌더(섀도우맵 방식). 별도 Camera보다 가볍고 "쉐도우맵 변용" 의도에 부합.
+- **구현 결정(M2): 전용 라이다 Camera + RenderTexture (방식 2)**. 라이다 카메라가 자기 RT에 렌더 →
+  URP가 라이다 프러스텀 컬링을 처리. 렌더 피처(`lidar_render_feature`)는 라이다 카메라에서만 override material로 id를 씀.
+  (당초 §3안이던 수동 컬링(`ScriptableCullingParameters`)은 RG 배관 리스크로 보류 — 성능 필요 시 리팩터.)
 - 라이다 view / projection 행렬: 위치·방향·FoV 파라미터화(요구사항: 실시간 조정).
-- RT: 하드웨어 depth 버퍼 + 정수 컬러 1장(`R16_UInt` 또는 `R32_UInt` = ID).
-  (depth를 컬러에 중복 기록하지 않는다 — 하드웨어 depth를 compute에서 직접 읽음.)
+- RT(=`id_rt`): **RGFloat** (R = id 실수, G = NDC depth) + depth 버퍼. 카메라 타깃이라 정수 포맷 대신 float
+  (작은 정수 id는 정확). depth를 G에 32bit로 담아 compute가 바로 샘플 — 8bit 패킹이 아니라 정밀도 문제 없음.
 - **RT 해상도 = 화면과 독립** (라이다 depth/ID는 표시되지 않고 per-ray로만 소비). 종횡비는 **라이다 FoV** 기준.
   크기 기준 = **레이 밀도**(인접 레이가 같은 texel로 몰리지 않을 정도). <50K 점이면 고정 **1024²~FHD**로 충분(20~40:1 여유).
   under-resolution의 증상은 점 병합이 아니라 **depth 양자화**(계단식 배치); 패턴이 극단적으로 조밀해지면 상향.
@@ -51,20 +52,22 @@
     prime/overlay의 vertex 변환 일치만 주의.
 
 ## 4. Compute 재구성
-- pc버퍼: `StructuredBuffer<{ float2 projXY(고정 입력), float z(출력), uint id(출력) }>`.
-  입력 패턴과 출력을 한 버퍼 in-place 또는 입/출력 분리 — 취향.
+- **버퍼 2개(입/출력 분리)**: `pattern`(`StructuredBuffer<float2>` = projXY, CPU 업로드) +
+  `pc`(`RWStructuredBuffer<{ float3 world; uint id }>`, compute가 매 프레임 기록).
 - **레이 패턴(projXY 생성)**: 동심원 패턴 — **링 수 + 세그먼트별 각도 offset**으로 시작(추후 고도화).
   **CPU에서 projXY 배열을 생성**해 pc버퍼에 업로드(단일 소스 — 프리뷰와 공유, §12).
-  파라미터 변경 시 CPU 재생성 → pc버퍼 **재할당(개수 바뀌면) + 재업로드**.
+  파라미터 변경 시 CPU 재생성 → pc버퍼 **재할당(개수 바뀌면) + 재업로드**(`lidar.rebuild()`; 에디터 플레이 중엔 `OnValidate`가 자동 호출).
 - 디스패치: ray 개수만큼 스레드.
-- 입력 샘플링: 하드웨어 depth(`Texture2D<float>`) + ID(`Texture2D<uint>`) 모두 **point / Load**(bilinear 금지).
-- projXY → uv → depth 샘플로 라이다 기준 z 획득. z + id 기록.
-- no-hit ray(depth=far, id=0)는 그대로 두면 통합 패스에서 자동 필터됨.
-- 저장 좌표계: **라이다 프로젝션 공간**([TODO2.md](TODO2.md)와 일치). 월드 복원은 통합 패스에서 `inverse(LiDAR VP)`.
+- 입력 샘플링: `id_rt`(R=id, G=NDC depth)를 `Load`로 **point 샘플**(bilinear 금지). uv = projXY*0.5+0.5.
+- **재구성**: NDC `(projXY.xy, G)` × `inverse(GPU LiDAR VP)` → 월드 좌표. `pc[i] = { world, round(R) }`.
+- no-hit ray(배경 클리어 → id 0)는 그대로 두면 통합 패스에서 자동 필터됨.
+- **저장 좌표계 = 월드**(개요 line 10과 일치). compute가 레이당 1회 unproject → 통합 패스는 월드만 읽어 단순(재구성 중복 없음).
+  `inverse(VP)` = `(GL.GetGPUProjectionMatrix(proj, false) * worldToCamera)`의 역행렬. (renderIntoTexture=**false** —
+  `true`면 Y가 뒤집혀 재구성이 상하 반전. Windows/D3D11에서 확인. reversed-Z는 이 flag와 무관하게 적용됨.)
 
 ## 5. 통합 드로우 (포인트)
 - **결정: Path 1** — `DrawProcedural`(triangles, 6×N, N = 레이 버퍼 크기 = CPU 상수). **리드백 없음.**
-- 정점 셰이더: pc버퍼[vid/6] 읽기 → proj → world → 메인 clip. corner(vid%6)로 **화면 고정 크기 축정렬 사각형**으로 확장.
+- 정점 셰이더: pc버퍼[vid/6]의 **월드 좌표 읽기 → 메인 clip**(unproject 불필요 — §4에서 이미 월드). corner(vid%6)로 **화면 고정 크기 축정렬 사각형**으로 확장.
   **AA 없음.** 크기는 per-ID 값(아래) 사용. 클립 z를 **카메라 쪽으로 살짝 bias**(both 오브젝트 coplanar z-fighting 완화).
 - 필터: `id ∉ PC집합` 또는 `id == 0` → degenerate quad로 폐기.
 - depth read/write **ON**, **메인 opaque와 동일한 depth attachment**에 그림
@@ -76,14 +79,16 @@
   PC 멤버십은 드로우 때 판정(토글 재계산 회피). 프로파일링에서 무효 정점 오버헤드가 잡힐 때만 전환.
 
 ## 6. 메인 opaque 필터 & "both" 처리
-- 메인 opaque는 평소대로 렌더하되, **pc-only는 `Renderer.forceRenderingOff`로 제외**(§1). normal/both는 그대로 그려짐.
-- both 오브젝트: 메인 opaque(solid) + 통합 패스(점) 양쪽에 등장 → §5의 depth bias로 coplanar 완화.
-- pc-only 오브젝트: 메인 opaque·카메라 depth에 안 나옴 → 점으로만 등장.
+- 메인/라이다는 **카메라별 cullingMask**로 분리: 메인은 pc-only 레이어 **제외**(solid 안 그림), 라이다는 **포함**(id·점 생성).
+  (`Renderer.forceRenderingOff`은 방식 2에서 두 카메라 모두 숨겨 못 씀.)
+- both 오브젝트: 일반 레이어 → 메인 opaque(solid) + 통합 패스(점) 양쪽 등장 → §5의 depth bias로 coplanar 완화.
+- pc-only 오브젝트: pc-only 레이어 → 메인 opaque·카메라 depth에 안 나옴 → 점으로만 등장(coplanar 없음).
 
 ## 7. RenderGraph 리소스
 - pc버퍼(ComputeBuffer): import, 프레임 지속(또는 매 프레임 재할당).
 - 라이다 depth / ID 텍스처: 프레임 내 transient.
-- 버퍼 read/write 의존성 선언 → compute → draw 순서 자동 배리어.
+- (M3 구현) compute는 RG 밖에서 `RenderPipelineManager.endCameraRendering`(라이다 카메라)로 dispatch — id_rt가 채워진 직후.
+  통합 드로우(M4, 메인 카메라)와의 순서는 **카메라 렌더 순서**(라이다 카메라가 메인보다 먼저)로 보장.
 
 ## 8. 프레임 동작
 - 이동·본 애니메이션 대응을 위해 라이다 패스·compute는 **매 프레임 재실행**.
@@ -96,6 +101,7 @@
 - 라이다 RT 해상도 ≥ 유효 ray 밀도 — 낮으면 여러 ray가 같은 texel 샘플 → depth 양자화.
 - 실루엣 flying pixel은 실제 라이다에도 있는 아티팩트 → 허용 가능(오히려 authentic).
 - 라이다 FoV: 단일 perspective = 전방 프러스텀(<180°). 360° 회전형은 이 구조로 불가.
+- 패턴 파라미터(ring_count/points_per_ring)는 **≥1로 clamp**(OnValidate) — 인스펙터 빈 칸(0)/음수가 zero-length·음수 버퍼 예외를 냄. `rebuild()`는 새 버퍼 생성 후 옛 것 해제(부분 해제 방지).
 
 ## 10. 요구사항 매핑
 - 실시간 패턴 밀도/모양 조정 → §3/§4 pc버퍼(projXY) 재채움.
@@ -145,3 +151,31 @@
   projXY가 이미 투영 좌표라 원근 처리 불필요(그대로 `[-1,1]²` 플롯 = 라이다가 보는 패턴). 오프스크린 — depth·씬 불필요.
 - 편집 통합: 패턴 설정 컴포넌트의 커스텀 Inspector(또는 EditorWindow)에 프리뷰 표시, 파라미터 변경 시 갱신.
 - (선택) 런타임 오버레이가 필요하면 pc버퍼를 `DrawProcedural`로 RT에 그리는 GPU 방식도 가능.
+
+## 13. 구현 진행 상황 & 남은 작업 (2026-07-13)
+
+### 완료 — 코어 파이프라인 M1~M6
+`unity/Assets/Scripts/Lidar/` 에 구현. 각 마일스톤은 에디터에서 검증 완료.
+
+1. **M1 패턴 + 프리뷰 + 리시버/레지스트리** — `lidar.cs`(패턴 `generate()` + 에디터 프리뷰), `lidar_receiver.cs`, `lidar_receiver_registry.cs`.
+2. **M2 라이다 패스(id + NDC depth)** — `lidar_render_feature.cs`(라이다 카메라 분기), `Shaders/lidar_id_write.shader`, 디버그: `lidar_debug_view.cs` + `Shaders/lidar_id_debug.shader`. 방식 2(전용 카메라+RGFloat `id_rt`), §3 A안(override material + MPB) 성립 확인.
+3. **M3 compute 재구성** — `lidar_reconstruct.compute`(레이별 `id_rt` Load → 월드 복원), `lidar.cs`가 `endCameraRendering`에서 dispatch, 디버그: `lidar_debug_points.cs`(기즈모). 복원 행렬은 `GL.GetGPUProjectionMatrix(proj, false)`(Y-flip 없음).
+4. **M4 통합 드로우** — `Shaders/lidar_point.shader`(화면 고정크기 사각형, per-id 색/크기, id==0 degenerate), `lidar_render_feature.cs` 메인 카메라 분기 + per-id 스타일 버퍼. depth-on 차폐, 카메라쪽 `depth_bias`.
+5. **M5 오브젝트 모드** — normal-only / both / pc-only. pc-only는 전용 레이어를 메인 카메라 cullingMask에서 제외(코드 무변경, 씬 설정).
+6. **M6 실시간 조정** — `lidar.rebuild()` + `OnValidate`(플레이 중 인스펙터 라이브), 파라미터 ≥1 clamp. 라이다 위치/방향/FoV는 매 프레임 카메라 행렬로 이미 라이브.
+
+### 필요한 에디터 설정 (씬 배선 — 코드로 안 됨)
+- 라이다 = Camera + `lidar` 컴포넌트. `reconstruct_cs` = `lidar_reconstruct`, 라이다 카메라 `depth` < 메인 카메라 `depth`.
+- `PC_Renderer`에 `lidar_render_feature` 추가: `write_shader`=lidar/id_write, `point_shader`=lidar/point, `depth_bias` 튜닝.
+- pc-only 레이어(예: `LidarOnly`)를 메인 카메라 cullingMask에서 해제.
+- 디버그(선택): `lidar_debug_view`(device+debug_mat=lidar/id_debug), `lidar_debug_points`(device).
+
+### 남은 작업 (전부 코어 아님 — 고도화/미세튜닝)
+- **B-6 depth_bias 미세 튜닝** — both 모드 coplanar. 인스펙터로 가능(부호는 플랫폼 의존).
+- **B-8 temporal shimmer** — 이동 시 점이 표면 위를 기어다님. 허용/완화 미정.
+- **거리·높이·intensity 컬러맵** — 라이다식 룩. §5의 "별도 PC 셰이더"로.
+- **pixelize** — TODO1의 미정 항목(화면공간 후처리). 미착수.
+- **패턴 절차 고도화** — 현재 동심원(링/각도 offset)만.
+- **C-9/C-10 RG 배관 대안** — 현재 compute는 RG 밖 `endCameraRendering` dispatch. RG-native로 옮길지.
+- **D-13 다중 라이다**, **D-14 360° FoV**(단일 perspective 한계) — 요구사항 밖.
+- **`map_resolution` 런타임 변경** — id_rt 재생성 필요, 미구현(패턴 파라미터만 라이브).
