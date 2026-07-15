@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/lidar_control_panel.uss?fileID=7433441132597879392&amp;guid=a105d82c4fab4944397c7fbbc6a583c9&amp;type=3#lidar_control_panel"/>
+    <ui:VisualElement name="panel" class="panel">
+        <Style src="project://database/Assets/UI/lidar_control_panel.uss?fileID=7433441132597879392&amp;guid=a105d82c4fab4944397c7fbbc6a583c9&amp;type=3#lidar_control_panel"/>
+        <ui:Label text="LiDAR Control" class="panel_title"/>
+        <ui:ScrollView name="scroll" class="scroll" mode="Vertical">
+        <ui:VisualElement name="pattern_section" class="section">
+            <ui:Label text="Pattern" class="section_title"/>
+            <ui:SliderInt name="ring_count" label="Rings" low-value="1" high-value="128" show-input-field="true"/>
+            <ui:SliderInt name="points_per_ring" label="Points / ring" low-value="1" high-value="256" show-input-field="true"/>
+            <ui:Slider name="radius" label="Radius" low-value="0" high-value="1" show-input-field="true"/>
+            <ui:Slider name="ring_angle_offset" label="Angle offset" low-value="0" high-value="1" show-input-field="true"/>
+            <ui:Image name="pattern_preview" class="preview"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="recording_section" class="section">
+            <ui:Label text="Recording" class="section_title"/>
+            <ui:TextField name="prefix" label="Prefix"/>
+            <ui:FloatField name="capture_fps" label="Capture FPS"/>
+            <ui:Toggle name="filter" label="Drop id==0"/>
+            <ui:Toggle name="opengl" label="OpenGL coords"/>
+            <ui:TextField name="output_dir" label="Output dir"/>
+            <ui:Button name="browse" text="Browse…" class="browse_btn"/>
+            <ui:Button name="record_toggle" text="Start Recording" class="record_btn"/>
+            <ui:Label name="status" text="" class="status"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="debug_section" class="section">
+            <ui:Label text="Debug (LiDAR view)" class="section_title"/>
+            <ui:Image name="debug_view" class="preview"/>
+        </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

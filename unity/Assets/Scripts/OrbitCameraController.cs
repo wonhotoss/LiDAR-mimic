@@ -41,6 +41,10 @@ namespace LiDARMimic
         [Tooltip("0 이면 즉시, 값이 클수록 부드럽게 따라갑니다.")]
         public float smoothTime = 0.06f;
 
+        [Header("UI")]
+        [Tooltip("필수: 이 패널 위에서 시작한 마우스 조작은 카메라에 전달하지 않는다.")]
+        public lidar_control_panel ui;
+
         [Header("State (read-only)")]
         [SerializeField] private float distance = 12f;
         [SerializeField] private float yaw = 45f;
@@ -52,8 +56,12 @@ namespace LiDARMimic
         private float _currentDistance;
         private Vector3 _currentFocus;
 
+        // 드래그 시작 시점이 UI 위였는지 래치(드래그가 패널 밖으로 나가도 유지).
+        private bool _dragOverUI;
+
         private void Awake()
         {
+            Debug.Assert(ui != null, "OrbitCameraController: ui (lidar_control_panel) not assigned");
             _currentDistance = distance;
             _currentFocus = focusPoint;
         }
@@ -74,8 +82,20 @@ namespace LiDARMimic
                 // 기즈모 드래그 중에는 카메라 입력을 무시한다 (좌클릭이 기즈모 조작과 겹침).
                 bool gizmoDragging = RTGizmos.get != null && RTGizmos.get.draggedGizmo != null;
 
+                // UI 위에서 눌러 시작한 드래그는 카메라를 움직이지 않는다.
+                bool overUI = ui.pointer_over_ui;
+                if (mouse.leftButton.wasPressedThisFrame || mouse.middleButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame)
+                {
+                    _dragOverUI = overUI;
+                }
+                if (!mouse.leftButton.isPressed && !mouse.middleButton.isPressed && !mouse.rightButton.isPressed)
+                {
+                    _dragOverUI = false;
+                }
+                bool block = gizmoDragging || _dragOverUI;
+
                 // 회전: 좌클릭 드래그
-                if (mouse.leftButton.isPressed && !gizmoDragging)
+                if (mouse.leftButton.isPressed && !block)
                 {
                     yaw += delta.x * orbitSensitivity;
                     pitch -= delta.y * orbitSensitivity;
@@ -83,7 +103,7 @@ namespace LiDARMimic
                 }
 
                 // 패닝: 중클릭 또는 우클릭 드래그
-                if ((mouse.middleButton.isPressed || mouse.rightButton.isPressed) && !gizmoDragging)
+                if ((mouse.middleButton.isPressed || mouse.rightButton.isPressed) && !block)
                 {
                     // 화면 우/상 방향으로 초점 이동 (거리에 비례해 체감 속도 일정하게)
                     float panScale = panSensitivity * distance;
@@ -94,7 +114,7 @@ namespace LiDARMimic
 
                 // 줌: 스크롤 휠 (Windows 는 보통 노치당 ±120)
                 float scroll = mouse.scroll.ReadValue().y;
-                if (Mathf.Abs(scroll) > 0.01f)
+                if (!overUI && Mathf.Abs(scroll) > 0.01f)
                 {
                     float notches = scroll / 120f;                       // 노치 단위로 정규화
                     float step = notches * distance * zoomSensitivity;   // 현재 거리에 비례한 지수형 줌

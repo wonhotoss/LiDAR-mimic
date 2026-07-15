@@ -2,9 +2,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace LiDARMimic {
     // One reconstructed LiDAR point: world position + originating object id (0 = background / non-receiver).
@@ -115,46 +112,4 @@ namespace LiDARMimic {
                 .ToArray();
         }
     }
-
-#if UNITY_EDITOR
-    // Inspector preview of the scan pattern (§12). Editor-only, kept beside the runtime type.
-    [CustomEditor(typeof(lidar))]
-    class lidar_editor : Editor {
-        const int preview_res = 256;
-        Texture2D preview;
-
-        public override void OnInspectorGUI() {
-            EditorGUI.BeginChangeCheck();
-            DrawDefaultInspector();
-            if (EditorGUI.EndChangeCheck() || preview == null) {
-                rebuild_preview();
-            }
-            var rect = GUILayoutUtility.GetAspectRect(1f);
-            EditorGUI.DrawPreviewTexture(rect, preview);
-        }
-
-        void OnDisable() {
-            if (preview != null) {
-                DestroyImmediate(preview);
-            }
-        }
-
-        void rebuild_preview() {
-            var pts = ((lidar)target).generate();
-            if (preview == null) {
-                preview = new Texture2D(preview_res, preview_res, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
-            }
-            var pixels = Enumerable.Repeat(Color.black, preview_res * preview_res).ToArray();
-            foreach (var xy in pts) {
-                var px = Mathf.RoundToInt((xy.x * 0.5f + 0.5f) * (preview_res - 1));
-                var py = Mathf.RoundToInt((xy.y * 0.5f + 0.5f) * (preview_res - 1));
-                if (px >= 0 && px < preview_res && py >= 0 && py < preview_res) {
-                    pixels[py * preview_res + px] = Color.white;
-                }
-            }
-            preview.SetPixels(pixels);
-            preview.Apply();
-        }
-    }
-#endif
 }

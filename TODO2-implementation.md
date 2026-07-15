@@ -157,18 +157,30 @@
 ### 완료 — 코어 파이프라인 M1~M6
 `unity/Assets/Scripts/Lidar/` 에 구현. 각 마일스톤은 에디터에서 검증 완료.
 
-1. **M1 패턴 + 프리뷰 + 리시버/레지스트리** — `lidar.cs`(패턴 `generate()` + 에디터 프리뷰), `lidar_receiver.cs`, `lidar_receiver_registry.cs`.
-2. **M2 라이다 패스(id + NDC depth)** — `lidar_render_feature.cs`(라이다 카메라 분기), `Shaders/lidar_id_write.shader`, 디버그: `lidar_debug_view.cs` + `Shaders/lidar_id_debug.shader`. 방식 2(전용 카메라+RGFloat `id_rt`), §3 A안(override material + MPB) 성립 확인.
-3. **M3 compute 재구성** — `lidar_reconstruct.compute`(레이별 `id_rt` Load → 월드 복원), `lidar.cs`가 `endCameraRendering`에서 dispatch, 디버그: `lidar_debug_points.cs`(기즈모). 복원 행렬은 `GL.GetGPUProjectionMatrix(proj, false)`(Y-flip 없음).
+1. **M1 패턴 + 프리뷰 + 리시버/레지스트리** — `lidar.cs`(패턴 `generate()`; 프리뷰는 M7 런타임 패널로 이관), `lidar_receiver.cs`, `lidar_receiver_registry.cs`.
+2. **M2 라이다 패스(id + NDC depth)** — `lidar_render_feature.cs`(라이다 카메라 분기), `Shaders/lidar_id_write.shader`, 디버그 머티리얼 `Shaders/lidar_id_debug.shader`(M7 패널 Debug 뷰가 표시; 초기 `lidar_debug_view.cs` IMGUI는 M7에서 삭제). 방식 2(전용 카메라+RGFloat `id_rt`), §3 A안(override material + MPB) 성립 확인.
+3. **M3 compute 재구성** — `lidar_reconstruct.compute`(레이별 `id_rt` Load → 월드 복원), `lidar.cs`가 `endCameraRendering`에서 dispatch, 디버그: `lidar_debug_points.cs`(씬뷰 기즈모, 유지). 복원 행렬은 `GL.GetGPUProjectionMatrix(proj, false)`(Y-flip 없음).
 4. **M4 통합 드로우** — `Shaders/lidar_point.shader`(화면 고정크기 사각형, per-id 색/크기, id==0 degenerate), `lidar_render_feature.cs` 메인 카메라 분기 + per-id 스타일 버퍼. depth-on 차폐, 카메라쪽 `depth_bias`.
 5. **M5 오브젝트 모드** — normal-only / both / pc-only. pc-only는 전용 레이어를 메인 카메라 cullingMask에서 제외(코드 무변경, 씬 설정).
 6. **M6 실시간 조정** — `lidar.rebuild()` + `OnValidate`(플레이 중 인스펙터 라이브), 파라미터 ≥1 clamp. 라이다 위치/방향/FoV는 매 프레임 카메라 행렬로 이미 라이브.
+
+### 완료 — 런타임 UITK 컨트롤 패널 M7 (2026-07-16)
+에디터/인스펙터 전용 + IMGUI UI를 **런타임 UI Toolkit 패널 하나**로 이관 → 스탠드얼론 빌드에서도 전 기능 조작. `unity/Assets/Scripts/Lidar/lidar_control_panel.cs` + `unity/Assets/UI/lidar_control_panel.uxml`/`.uss`.
+- **Pattern** — ring/points/radius/offset 라이브 편집(`device.rebuild()`) + 패턴 프리뷰(`generate()` 단일 소스, §12).
+- **Recording** — `lidar_capture` 바인딩(prefix/fps/filter/opengl/output_dir) + Start/Stop + 상태(프레임 카운트) + **Browse…** 폴더 선택(`SFB.StandaloneFileBrowser.OpenFolderPanel`).
+- **Debug** — `id_rt`를 `lidar/id_debug`로 blit한 scratch RT를 `Image`로 표시(구 `lidar_debug_view` 대체).
+- **입력 중재** — `pointer_over_ui`(패널 subtree hover)로 `OrbitCameraController`·`rtg_object_controller`가 패널 위 클릭/드래그/휠을 무시.
+- **삭제됨** — `lidar_editor`, `lidar_capture_editor` CustomEditor + `lidar_debug_view.cs`(IMGUI). (`lidar_debug_points`의 씬뷰 기즈모만 유지.)
+- **필수 참조** — 패널 `device`/`capture`/`debug_mat`, 두 컨트롤러 `ui`는 미할당 시 silent fail 대신 `Debug.Assert`로 노출.
+- **의존성** — UnityStandaloneFileBrowser(gkngkc) 패키지 필요(Windows 네이티브 `Ookii.Dialogs.dll` 포함).
 
 ### 필요한 에디터 설정 (씬 배선 — 코드로 안 됨)
 - 라이다 = Camera + `lidar` 컴포넌트. `reconstruct_cs` = `lidar_reconstruct`, 라이다 카메라 `depth` < 메인 카메라 `depth`.
 - `PC_Renderer`에 `lidar_render_feature` 추가: `write_shader`=lidar/id_write, `point_shader`=lidar/point, `depth_bias` 튜닝.
 - pc-only 레이어(예: `LidarOnly`)를 메인 카메라 cullingMask에서 해제.
-- 디버그(선택): `lidar_debug_view`(device+debug_mat=lidar/id_debug), `lidar_debug_points`(device).
+- **UITK 패널(M7)**: `UIDocument`(Source=`lidar_control_panel.uxml`, PanelSettings 에셋) + `lidar_control_panel` 컴포넌트. 할당 = `device`, `capture`(`lidar_capture`), `debug_mat`=`lidar/id_debug`. `OrbitCameraController`·`rtg_object_controller`의 `ui`에 이 패널 할당. (모두 필수 — 미할당 시 assert)
+- UnityStandaloneFileBrowser 패키지 import(폴더 선택용).
+- 디버그(선택): `lidar_debug_points`(device) 씬뷰 기즈모.
 
 ### 남은 작업 (전부 코어 아님 — 고도화/미세튜닝)
 - **B-6 depth_bias 미세 튜닝** — both 모드 coplanar. 인스펙터로 가능(부호는 플랫폼 의존).

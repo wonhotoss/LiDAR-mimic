@@ -9,6 +9,7 @@ namespace LiDARMimic {
     // Setup: run Tools/RTG/Initialize and add the RTMainSRF render feature (see setup notes).
     public class rtg_object_controller : MonoBehaviour {
         public Camera pick_camera; // camera used for picking + gizmo rendering (the main camera)
+        public lidar_control_panel ui; // required: clicks over this panel don't select/deselect scene objects
 
         enum mode { move, rotate, scale }
         mode current = mode.move;
@@ -20,6 +21,7 @@ namespace LiDARMimic {
 
         void Start() {
             Debug.Assert(RTG.get != null, "rtg_object_controller: RTG not in scene (run Tools/RTG/Initialize)");
+            Debug.Assert(ui != null, "rtg_object_controller: ui (lidar_control_panel) not assigned");
             RTCamera.get.settings.targetCamera = pick_camera;
             move_gizmo = RTGizmos.get.CreateObjectMoveGizmo();
             rotate_gizmo = RTGizmos.get.CreateObjectRotateGizmo();
@@ -42,8 +44,9 @@ namespace LiDARMimic {
                 apply();
             }
 
-            // Select on click, but not when the click lands on a gizmo handle (that click is a drag).
-            if (Mouse.current.leftButton.wasPressedThisFrame && RTGizmos.get.hoveredGizmo == null) {
+            // Select on click, but not when the click lands on a gizmo handle (that click is a drag) or on the UI panel.
+            var over_panel = ui.pointer_over_ui;
+            if (Mouse.current.leftButton.wasPressedThisFrame && RTGizmos.get.hoveredGizmo == null && !over_panel) {
                 if (RTScene.get.Raycast(RTCamera.get.GetPickRay(), new ObjectFilter(), false, out var hit) && hit.hasObjectHit) {
                     var l = hit.objectHit.gameObject.GetComponentInParent<lidar>();
                     select(l != null ? l.gameObject : hit.objectHit.gameObject);

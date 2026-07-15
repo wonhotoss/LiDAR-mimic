@@ -3,9 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace LiDARMimic {
     // Records the reconstructed pc_buffer to a binary PLY sequence (one file per captured frame) via async GPU readback.
@@ -24,6 +21,8 @@ namespace LiDARMimic {
         float last_capture_time;
 
         string dir => string.IsNullOrEmpty(output_dir) ? Application.persistentDataPath : output_dir;
+
+        public int captured => frame_index; // frames captured this session; drives the panel status readout
 
         void OnEnable() {
             RenderPipelineManager.endFrameRendering += on_end_frame;
@@ -87,17 +86,4 @@ namespace LiDARMimic {
         }
     }
 
-#if UNITY_EDITOR
-    // Editor test trigger: toggles the runtime `recording` flag in play mode. Runtime code does not reference this.
-    [CustomEditor(typeof(lidar_capture))]
-    class lidar_capture_editor : Editor {
-        public override void OnInspectorGUI() {
-            DrawDefaultInspector();
-            var c = (lidar_capture)target;
-            if (GUILayout.Button(c.recording ? "Stop Recording" : "Start Recording")) {
-                c.recording = !c.recording;
-            }
-        }
-    }
-#endif
 }
