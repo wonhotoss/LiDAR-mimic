@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2969141326096040497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f586353d1af964a4982ede88d6e5898c, type: 3}
+  m_Name: RTMainSRF
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTMainSRF
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,6 +40,7 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: 8482299153843979511}
+  - {fileID: -2969141326096040497}
   m_RendererFeatureMap: ad6b866f10d7b46cf78477a7232eb775
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}

@@ -193,7 +193,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -689,7 +689,7 @@ Transform:
   m_GameObject: {fileID: 2000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.01, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1563,6 +1563,7 @@ GameObject:
   - component: {fileID: 103073409}
   - component: {fileID: 103073408}
   - component: {fileID: 103073413}
+  - component: {fileID: 103073414}
   m_Layer: 0
   m_Name: lidar Camera
   m_TagString: Untagged
@@ -1671,7 +1672,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1717,6 +1718,24 @@ MonoBehaviour:
   capture_fps: 60
   output_dir: 
   prefix: lidar
+--- !u!114 &103073414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103073407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86195b0f3d6b12e41bb38d4ab16e997d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LiDARMimic.lidar_frustum_viz
+  line_material: {fileID: 2100000, guid: fc55feedeab43cb4e86886036794ce32, type: 2}
+  marker_material: {fileID: 2100000, guid: 0662f442d48229241902b4c5fdc532fb, type: 2}
+  frustum_length: 12
+  marker_size: 0.4
+  line_width: 0.03
+  viz_layer: Viz
 --- !u!1 &147227313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,6 +1782,1064 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &188705948
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188705950}
+  - component: {fileID: 188705949}
+  - component: {fileID: 188705951}
+  m_Layer: 0
+  m_Name: RTG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &188705949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188705948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f2ff0f826050548aeb5c612f98ed6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTG
+--- !u!4 &188705950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188705948}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2007374144}
+  - {fileID: 510224272}
+  - {fileID: 1442360201}
+  - {fileID: 634615843}
+  - {fileID: 385874743}
+  - {fileID: 381402149}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &188705951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188705948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d93f7f43cf86b9408cb811f8ae831cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LiDARMimic.rtg_object_controller
+  pick_camera: {fileID: 1002}
+--- !u!1 &381402148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 381402149}
+  - component: {fileID: 381402150}
+  m_Layer: 0
+  m_Name: RTUndo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &381402149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381402148}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &381402150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381402148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97cfc6e4cf7b72479feeb8fd4379fbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTUndo
+  mStackSize: 50
+--- !u!1 &385874742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 385874743}
+  - component: {fileID: 385874744}
+  m_Layer: 0
+  m_Name: RTInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &385874743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385874742}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &385874744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385874742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d9e33f01b94e9147875da0251cf52a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTInput
+  mShortcutProfileManager:
+    mProfiles:
+    - mName: Default
+      mShortcutCategories:
+      - mName: Camera
+        mShortcuts:
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 1
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 1
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Pan Mode
+          mBindingDisplayText: Middle MB
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183123
+          mContext:
+            rid: 5511738886879183124
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 1
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 1
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 1
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 1
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Orbit Mode
+          mBindingDisplayText: Alt + Left MB
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183125
+          mContext:
+            rid: 5511738886879183124
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mEnabled: 1
+          mName: Fly Mode
+          mBindingDisplayText: Right MB
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183126
+          mContext:
+            rid: 5511738886879183124
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 1
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mBinding:
+            alt: 1
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mEnabled: 1
+          mName: Zoom Mode
+          mBindingDisplayText: Alt + Right MB
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183127
+          mContext:
+            rid: 5511738886879183124
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 15
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 15
+          mEnabled: 1
+          mName: Fly Left
+          mBindingDisplayText: A
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183128
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 18
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 18
+          mEnabled: 1
+          mName: Fly Right
+          mBindingDisplayText: D
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183130
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 31
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 31
+          mEnabled: 1
+          mName: Fly Down
+          mBindingDisplayText: Q
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183131
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 19
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 19
+          mEnabled: 1
+          mName: Fly Up
+          mBindingDisplayText: E
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183132
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 33
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 33
+          mEnabled: 1
+          mName: Fly Backward
+          mBindingDisplayText: S
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183133
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 37
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 37
+          mEnabled: 1
+          mName: Fly Forward
+          mBindingDisplayText: W
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183134
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 1
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 1
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Speed Modifier
+          mBindingDisplayText: Shift
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183135
+          mContext:
+            rid: 5511738886879183129
+          mConflicts: []
+      - mName: Grid
+        mShortcuts:
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 11
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 11
+          mEnabled: 1
+          mName: Step Move Down
+          mBindingDisplayText: '['
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183136
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 12
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 12
+          mEnabled: 1
+          mName: Step Move Up
+          mBindingDisplayText: ']'
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183138
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 21
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 21
+          mEnabled: 1
+          mName: Action Mode
+          mBindingDisplayText: G
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183139
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 1
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 1
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Snap to Pick-Point
+          mBindingDisplayText: Left MB
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183140
+          mContext:
+            rid: 5511738886879183141
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 1
+            key: 0
+          mEnabled: 1
+          mName: Snap to Pick-Point Extents
+          mBindingDisplayText: Right MB
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183142
+          mContext:
+            rid: 5511738886879183141
+          mConflicts: []
+      - mName: Gizmos
+        mShortcuts:
+        - mDefaultBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Snap
+          mBindingDisplayText: Control
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183143
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 36
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 36
+          mEnabled: 1
+          mName: Vertex Snap
+          mBindingDisplayText: V
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183144
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 1
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mBinding:
+            alt: 0
+            control: 0
+            command: 0
+            shift: 1
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 0
+          mEnabled: 1
+          mName: Alt Mode
+          mBindingDisplayText: Shift
+          mStrictModifierCheck: 0
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183145
+          mContext:
+            rid: 5511738886879183137
+          mConflicts: []
+      - mName: Undo/Redo
+        mShortcuts:
+        - mDefaultBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 40
+          mBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 40
+          mEnabled: 1
+          mName: Undo
+          mBindingDisplayText: Control + Z
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183146
+          mContext:
+            rid: 5511738886879183147
+          mConflicts: []
+        - mDefaultBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 39
+          mBinding:
+            alt: 0
+            control: 1
+            command: 0
+            shift: 0
+            leftMB: 0
+            middleMB: 0
+            rightMB: 0
+            key: 39
+          mEnabled: 1
+          mName: Redo
+          mBindingDisplayText: Control + Y
+          mStrictModifierCheck: 1
+          mIgnoreUIKeyboardCapture: 0
+          mCommand:
+            rid: 5511738886879183148
+          mContext:
+            rid: 5511738886879183147
+          mConflicts: []
+    mActiveProfileIndex: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 5511738886879183123
+      type: {class: Command_Camera_PanMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183124
+      type: {class: Context_SceneView_Navigation, ns: RTGLite, asm: Assembly-CSharp}
+      data:
+        mName: Scene View Navigation
+    - rid: 5511738886879183125
+      type: {class: Command_Camera_OrbitMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183126
+      type: {class: Command_Camera_FlyMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183127
+      type: {class: Command_Camera_ZoomMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183128
+      type: {class: Command_Camera_FlyLeft, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183129
+      type: {class: Context_Camera_FlyMode, ns: RTGLite, asm: Assembly-CSharp}
+      data:
+        mName: Camera Fly Mode
+    - rid: 5511738886879183130
+      type: {class: Command_Camera_FlyRight, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183131
+      type: {class: Command_Camera_FlyDown, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183132
+      type: {class: Command_Camera_FlyUp, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183133
+      type: {class: Command_Camera_FlyBackward, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183134
+      type: {class: Command_Camera_FlyForward, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183135
+      type: {class: Command_Camera_SpeedModifier, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183136
+      type: {class: Command_Grid_StepMoveDown, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183137
+      type: {class: Context_SceneView, ns: RTGLite, asm: Assembly-CSharp}
+      data:
+        mName: Scene View
+    - rid: 5511738886879183138
+      type: {class: Command_Grid_StepMoveUp, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183139
+      type: {class: Command_Grid_ActionMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183140
+      type: {class: Command_Grid_SnapToPickPoint, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183141
+      type: {class: Context_Grid_ActionMode, ns: RTGLite, asm: Assembly-CSharp}
+      data:
+        mName: Grid Action Mode
+    - rid: 5511738886879183142
+      type: {class: Command_Grid_SnapToPickPointExtents, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183143
+      type: {class: Command_Gizmos_Snap, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183144
+      type: {class: Command_Gizmos_VertexSnap, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183145
+      type: {class: Command_Gizmos_AltMode, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183146
+      type: {class: Command_Undo, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+    - rid: 5511738886879183147
+      type: {class: Context_Global, ns: RTGLite, asm: Assembly-CSharp}
+      data:
+        mName: Global
+    - rid: 5511738886879183148
+      type: {class: Command_Redo, ns: RTGLite, asm: Assembly-CSharp}
+      data: 
+--- !u!1 &510224271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 510224272}
+  - component: {fileID: 510224273}
+  m_Layer: 0
+  m_Name: RTScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &510224272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510224271}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &510224273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510224271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c23ae2963226d44aa2f255c70acd89e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTScene
+--- !u!1 &634615842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 634615843}
+  - component: {fileID: 634615844}
+  m_Layer: 0
+  m_Name: RTGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &634615843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634615842}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &634615844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634615842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe83bc58da7eb0740b32e0ceac564cd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTGrid
+  mSettings:
+    mLocalYOffset: 0
+    mCellSize: {x: 1, y: 1, z: 1}
+    mPlane: 2
+  mStyle:
+    mVisible: 1
+    mZoomFadeEnabled: 1
+    mCellLineColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.4}
+    mXAxisColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+    mYAxisColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+    mZAxisColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+    mDrawGridAxes: 1
+    mFiniteXAxis: 0
+    mXAxisLength: 10
+    mFiniteYAxis: 1
+    mYAxisLength: 10
+    mFiniteZAxis: 0
+    mZAxisLength: 10
+--- !u!1 &1442360200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442360201}
+  - component: {fileID: 1442360202}
+  m_Layer: 0
+  m_Name: RTCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1442360201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442360200}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442360202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442360200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff14fcf9f7a34a9428e4bc13b98e21f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTCamera
+  mSettings:
+    mTargetCamera: {fileID: 0}
+    mUsePhysics: 1
+    mAcceleration: 180
+    mSpeedModifier: 2
+    mFriction: 120
+    mMaxMoveSpeed: 60
+    mPanSensitivity: 0.05
+    mRotationSensitivity: 0.5
+    mOrbitSnesitivity: 0.5
+    mMoveSpeed: 60
+    mFocusMode: 1
+    mFocusSmoothSpeed: 15
+    mProjectionSwitchMode: 1
+    mProjectionTransitionDuration: 0.23
+    mRotationSwitchMode: 1
+    mRotationSwitchSmoothSpeed: 15
+  mBgStyle:
+    mVisible: 1
+    mTopColor: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
+    mBottomColor: {r: 0.039215688, g: 0.039215688, b: 0.039215688, a: 1}
+    mGradientOffset: 0
+--- !u!1 &2007374143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2007374144}
+  - component: {fileID: 2007374145}
+  m_Layer: 0
+  m_Name: RTGizmos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2007374144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007374143}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188705950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2007374145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007374143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e3c568776ffe042b2f38278a66f548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTGLite.RTGizmos
+  mSkin: {fileID: 0}
+  mSortGizmos: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1783,3 +2860,4 @@ SceneRoots:
   - {fileID: 103073412}
   - {fileID: 51137818}
   - {fileID: 147227315}
+  - {fileID: 188705950}

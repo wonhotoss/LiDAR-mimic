@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RTGLite;
 
 namespace LiDARMimic
 {
@@ -70,8 +71,11 @@ namespace LiDARMimic
             {
                 Vector2 delta = mouse.delta.ReadValue();
 
+                // 기즈모 드래그 중에는 카메라 입력을 무시한다 (좌클릭이 기즈모 조작과 겹침).
+                bool gizmoDragging = RTGizmos.get != null && RTGizmos.get.draggedGizmo != null;
+
                 // 회전: 좌클릭 드래그
-                if (mouse.leftButton.isPressed)
+                if (mouse.leftButton.isPressed && !gizmoDragging)
                 {
                     yaw += delta.x * orbitSensitivity;
                     pitch -= delta.y * orbitSensitivity;
@@ -79,7 +83,7 @@ namespace LiDARMimic
                 }
 
                 // 패닝: 중클릭 또는 우클릭 드래그
-                if (mouse.middleButton.isPressed || mouse.rightButton.isPressed)
+                if ((mouse.middleButton.isPressed || mouse.rightButton.isPressed) && !gizmoDragging)
                 {
                     // 화면 우/상 방향으로 초점 이동 (거리에 비례해 체감 속도 일정하게)
                     float panScale = panSensitivity * distance;
