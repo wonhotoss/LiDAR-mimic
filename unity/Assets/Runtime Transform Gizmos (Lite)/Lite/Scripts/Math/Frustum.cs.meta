@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d39f296115e136f498b04fc43a3e16a8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Math/Frustum.cs
+  uploadId: 937938

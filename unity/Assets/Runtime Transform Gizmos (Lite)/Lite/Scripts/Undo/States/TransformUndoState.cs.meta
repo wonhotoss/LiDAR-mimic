@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 4c70f02e4985a5c48a800ece452789bb
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Undo/States/TransformUndoState.cs
+  uploadId: 937938

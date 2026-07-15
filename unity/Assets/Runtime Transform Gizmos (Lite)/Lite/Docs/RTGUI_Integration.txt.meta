@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6d6388f2eac5f6b48a3d54a0157c39cc
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Docs/RTGUI_Integration.txt
+  uploadId: 937938

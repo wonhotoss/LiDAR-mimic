@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: aed1bb45b26e7524baaca19d4b8b8c86
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Input/MouseInputDevice.cs
+  uploadId: 937938

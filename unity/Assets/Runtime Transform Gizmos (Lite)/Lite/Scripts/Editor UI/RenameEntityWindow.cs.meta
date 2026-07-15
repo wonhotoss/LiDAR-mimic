@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: dd6fd8d275d296f4cb0fa73facaaeb21
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Editor UI/RenameEntityWindow.cs
+  uploadId: 937938

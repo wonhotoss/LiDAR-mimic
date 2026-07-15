@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 5e0b7a7f8944ad241a0210e9b123abb6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Core/Extensions/SphereColliderEx.cs
+  uploadId: 937938

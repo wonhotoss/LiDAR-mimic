@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b0c6e20a1dc096042b82a1a9c104429c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Gizmos/Behaviours/IRTObjectTransformGizmoTarget.cs
+  uploadId: 937938

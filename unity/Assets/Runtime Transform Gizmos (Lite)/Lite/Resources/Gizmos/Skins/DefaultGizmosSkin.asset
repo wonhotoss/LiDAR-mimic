@@ -1,0 +1,1635 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eec73d24eb5fde4695987a5dceedb12, type: 3}
+  m_Name: DefaultGizmosSkin
+  m_EditorClassIdentifier: 
+  mGizmoType: 0
+  mInitialized: 0
+  mGlobalGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mShadeMode: 0
+    mAxisColors:
+    - {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+    - {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+    - {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+    mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+    mPlaneSliderAlpha: 0.2
+    mPlaneSliderHoveredAlpha: 0.4
+    mCullAlphaScale: 0.035
+    mRotationArcStyle:
+      mVisible: 1
+      mHoverable: 1
+      mColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.1}
+      mBorderColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.7}
+    mLightColor: {r: 0.8235294, g: 0.8235294, b: 0.5411765, a: 1}
+    mLightSnapRayColor: {r: 0.8666667, g: 0.5647059, b: 0.23529412, a: 1}
+    mLightSnapCapStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 2
+      mColor: {r: 1, g: 0, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mLightRangeSnap: 0.1
+    mColliderColor: {r: 0.6, g: 0.9098039, b: 0.5647059, a: 1}
+    mColliderSnap: 0.1
+    mCharacterControllerColor: {r: 0.6, g: 0.9098039, b: 0.5647059, a: 1}
+    mCharacterControllerSnap: 0.1
+    mAudioSnap: 0.1
+    mDragInfoTextStyle:
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mBgColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+      mBgBorderColor: {r: 1, g: 1, b: 1, a: 1}
+      mFontSize: 12
+      mFontStyle: 0
+      mVisible: 1
+    mHoverPadding: 0.4
+    mRotationSensitivity: 0.45
+    mScaleSensitivity: 0.3
+    mRotationSnap: 15
+    mScaleSnap: 0.1
+  mViewGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mAlignment: 1
+    mScreenSize: 100
+    mScreenPadding: {x: 0, y: 0}
+    mAxisCapStylesP:
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mAxisCapStylesN:
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mCenterCapStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.7
+      mBoxHeight: 0.7
+      mBoxDepth: 0.7
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.5
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mAxisLabelColor: {r: 1, g: 1, b: 1, a: 1}
+    mCamPModeLabelColor: {r: 1, g: 1, b: 1, a: 1}
+    mCamPModeLabelVisible: 1
+  mMoveGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mAxisSliderStylesP:
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    mAxisSliderStylesN:
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    mAxisCapStylesP:
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mAxisCapStylesN:
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 0
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mDblAxisSliderStyles:
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 0
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.2}
+      mBorderColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 0
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.2}
+      mBorderColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 0
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.2}
+      mBorderColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1
+    mAxisOffset: 0
+    mDblAxisOffset: 0
+    mVSnapCapStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 11
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 1.1
+      mQuadHeight: 1.1
+      mSphereRadius: 0.35
+      mCircleRadius: 0.8
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+  mRotateGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mAxisCapStyles:
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 12
+      mColor: {r: 0.8588235, g: 0.2431373, b: 0.1137255, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 4.05
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 4.05
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 4.05
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 12
+      mColor: {r: 0.6039216, g: 0.9529412, b: 0.282353, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 4.05
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 4.05
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 4.05
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 12
+      mColor: {r: 0.227451, g: 0.4784314, b: 0.972549, a: 0.9294118}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 4.05
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 4.05
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 4.05
+      mTorusTubeRadius: 0.1
+    mArcBallStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 3
+      mColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
+      mColorHovered: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
+      mSphereBorderColor: {r: 1, g: 1, b: 1, a: 1}
+      mUseGlobalHoveredColor: 0
+      mSphereBorderVisible: 1
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 4
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mViewCapStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 12
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 4.5
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+  mScaleGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mSliderScaleEnabled: 1
+    mAxisSliderStylesP:
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    mAxisSliderStylesN:
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mSliderTYpe: 0
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mLength: 4
+      mStartCutoff: 0
+      mEndCutOff: 0
+      mThickness: 0.1
+    mAxisCapStylesP:
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 1
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mAxisCapStylesN:
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    - mVisible: 0
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mDblAxisSliderStyles:
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 1
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1.5
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 1
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1.5
+    - mVisible: 1
+      mHoverable: 1
+      mSliderType: 1
+      mBorderType: 0
+      mPlaneVisible: 1
+      mBorderVisible: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mQuadWidth: 1
+      mQuadHeight: 1
+      mQuadBorderWidth: 0.1
+      mQuadBorderHeight: 0.1
+      mRATriangleSize: 1.5
+    mUniformCapStyle:
+      mVisible: 1
+      mHoverable: 1
+      mCapType: 1
+      mColor: {r: 1, g: 1, b: 1, a: 1}
+      mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+      mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+      mUseGlobalHoveredColor: 1
+      mSphereBorderVisible: 0
+      mConeRadius: 0.35
+      mConeLength: 1.2
+      mPyramidBaseSize: 0.7
+      mPyramidLength: 1.2
+      mBoxWidth: 0.5
+      mBoxHeight: 0.5
+      mBoxDepth: 0.5
+      mQuadWidth: 0.5
+      mQuadHeight: 0.5
+      mSphereRadius: 0.35
+      mCircleRadius: 0.25
+      mInsetCircleThickness: 0.1
+      mCylinderRadius: 0.25
+      mCylinderLength: 0.5
+      mInsetCylinderThickness: 0.1
+      mTorusRadius: 1
+      mTorusTubeRadius: 0.1
+    mAxisOffset: 0
+    mDblAxisOffset: 0.3
+  mTRSGizmoStyle:
+    mVisible: 1
+    mHoverable: 1
+    mScale: 1
+    mStyleCategory: 0
+    mMoveStyle:
+      mVisible: 1
+      mHoverable: 1
+      mScale: 1
+      mAxisSliderStylesP:
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      mAxisSliderStylesN:
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 4
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      mAxisCapStylesP:
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mAxisCapStylesN:
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mDblAxisSliderStyles:
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 0
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1.4
+        mQuadHeight: 1.4
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 0
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1.4
+        mQuadHeight: 1.4
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 0
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1.4
+        mQuadHeight: 1.4
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1
+      mAxisOffset: 0
+      mDblAxisOffset: 0
+      mVSnapCapStyle:
+        mVisible: 1
+        mHoverable: 1
+        mCapType: 11
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 1.1
+        mQuadHeight: 1.1
+        mSphereRadius: 0.35
+        mCircleRadius: 0.8
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+    mRotateStyle:
+      mVisible: 1
+      mHoverable: 1
+      mScale: 1
+      mAxisCapStyles:
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 12
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 4.05
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 4.05
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 4.05
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 12
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 4.05
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 4.05
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 4.05
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 12
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 4.05
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 4.05
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 4.05
+        mTorusTubeRadius: 0.1
+      mArcBallStyle:
+        mVisible: 1
+        mHoverable: 1
+        mCapType: 3
+        mColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
+        mColorHovered: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
+        mSphereBorderColor: {r: 1, g: 1, b: 1, a: 1}
+        mUseGlobalHoveredColor: 0
+        mSphereBorderVisible: 1
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 4
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mViewCapStyle:
+        mVisible: 1
+        mHoverable: 1
+        mCapType: 12
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 4.5
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+    mScaleStyle:
+      mVisible: 1
+      mHoverable: 1
+      mScale: 1
+      mSliderScaleEnabled: 1
+      mAxisSliderStylesP:
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      mAxisSliderStylesN:
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mSliderTYpe: 0
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mLength: 1
+        mStartCutoff: 0
+        mEndCutOff: 0
+        mThickness: 0.1
+      mAxisCapStylesP:
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 1
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mAxisCapStylesN:
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      - mVisible: 0
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mDblAxisSliderStyles:
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 1
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1
+        mQuadHeight: 1
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1.5
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 1
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1
+        mQuadHeight: 1
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1.5
+      - mVisible: 1
+        mHoverable: 1
+        mSliderType: 1
+        mBorderType: 0
+        mPlaneVisible: 1
+        mBorderVisible: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mQuadWidth: 1
+        mQuadHeight: 1
+        mQuadBorderWidth: 0.1
+        mQuadBorderHeight: 0.1
+        mRATriangleSize: 1.5
+      mUniformCapStyle:
+        mVisible: 1
+        mHoverable: 1
+        mCapType: 1
+        mColor: {r: 1, g: 1, b: 1, a: 1}
+        mColorHovered: {r: 0.94509804, g: 0.94509804, b: 0.28627452, a: 1}
+        mSphereBorderColor: {r: 0, g: 0, b: 0, a: 1}
+        mUseGlobalHoveredColor: 1
+        mSphereBorderVisible: 0
+        mConeRadius: 0.35
+        mConeLength: 1.2
+        mPyramidBaseSize: 0.7
+        mPyramidLength: 1.2
+        mBoxWidth: 0.5
+        mBoxHeight: 0.5
+        mBoxDepth: 0.5
+        mQuadWidth: 0.5
+        mQuadHeight: 0.5
+        mSphereRadius: 0.35
+        mCircleRadius: 0.25
+        mInsetCircleThickness: 0.1
+        mCylinderRadius: 0.25
+        mCylinderLength: 0.5
+        mInsetCylinderThickness: 0.1
+        mTorusRadius: 1
+        mTorusTubeRadius: 0.1
+      mAxisOffset: 5
+      mDblAxisOffset: 1.5

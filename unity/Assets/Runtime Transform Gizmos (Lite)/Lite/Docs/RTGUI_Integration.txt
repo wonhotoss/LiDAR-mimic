@@ -1,0 +1,17 @@
+RTG can optionally detect and integrate with RTGUI - Runtime Tool GUI
+Framework.
+
+To enable this integration, define the following scripting symbol in your Unity
+project:
+
+RTGUI_PRESENT
+
+You can add this symbol from:
+
+Edit -> Project Settings -> Player -> Other Settings -> Scripting Define Symbols
+
+When RTGUI_PRESENT is defined, RTG will take RTGUI into account where
+applicable, such as when checking whether pointer or keyboard input is currently
+being used by RTGUI controls.
+
+If you are not using RTGUI, no action is required. Leave the symbol undefined.

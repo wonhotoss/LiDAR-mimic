@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c47d79542d5f4a04b8f3c59ef32c95de
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Input/PointingInputDevice.cs
+  uploadId: 937938

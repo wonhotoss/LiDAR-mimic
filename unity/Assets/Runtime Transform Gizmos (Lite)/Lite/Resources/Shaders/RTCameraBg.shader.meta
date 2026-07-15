@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e9f290524b12df54aa38b7e3510fdbf6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Resources/Shaders/RTCameraBg.shader
+  uploadId: 937938

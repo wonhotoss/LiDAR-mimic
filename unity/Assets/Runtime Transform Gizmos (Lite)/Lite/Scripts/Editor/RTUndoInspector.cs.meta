@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 6c7e7f344dfde3c44962ef2a35f06237
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Editor/RTUndoInspector.cs
+  uploadId: 937938

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5a1d6f55a1eee8943831d025fbb2a974
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Resources/Gizmos/Skins/DefaultGizmosSkin.asset
+  uploadId: 937938

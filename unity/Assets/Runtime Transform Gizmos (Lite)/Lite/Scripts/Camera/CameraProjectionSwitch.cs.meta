@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ebc109822d7023849a944f5b46558c30
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Camera/CameraProjectionSwitch.cs
+  uploadId: 937938

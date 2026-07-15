@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 7c3914faeab1e3d45919cf25925674ec
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Gizmos/Handles/GizmoArcStyle.cs
+  uploadId: 937938

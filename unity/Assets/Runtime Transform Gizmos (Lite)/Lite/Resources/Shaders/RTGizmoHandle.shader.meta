@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a1ecb638b5b1db84c908bad79696aee5
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Resources/Shaders/RTGizmoHandle.shader
+  uploadId: 937938

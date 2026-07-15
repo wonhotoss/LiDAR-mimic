@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5f763d8de261d11439479aa23770b364
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Resources/Shaders/RTMath.cginc
+  uploadId: 937938

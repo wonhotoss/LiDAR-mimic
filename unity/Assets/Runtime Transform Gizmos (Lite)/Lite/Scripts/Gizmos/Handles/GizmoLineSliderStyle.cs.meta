@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0f32ef3bf7bdefd48a6ed83093cdfd54
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Gizmos/Handles/GizmoLineSliderStyle.cs
+  uploadId: 937938

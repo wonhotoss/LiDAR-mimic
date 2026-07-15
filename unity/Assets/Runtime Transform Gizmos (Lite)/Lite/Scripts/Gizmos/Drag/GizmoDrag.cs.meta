@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d10e41fb8e2432c42b0395994e86e663
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Gizmos/Drag/GizmoDrag.cs
+  uploadId: 937938

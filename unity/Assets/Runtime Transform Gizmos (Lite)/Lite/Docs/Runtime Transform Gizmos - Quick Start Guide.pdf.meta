@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a2ae2875b4bdac84789e87a83c8fae52
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Docs/Runtime Transform Gizmos
+    - Quick Start Guide.pdf
+  uploadId: 937938

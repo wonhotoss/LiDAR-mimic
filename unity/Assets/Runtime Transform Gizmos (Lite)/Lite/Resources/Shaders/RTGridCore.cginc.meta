@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3bcc407c5b15e3340882306d496b17f3
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Resources/Shaders/RTGridCore.cginc
+  uploadId: 937938

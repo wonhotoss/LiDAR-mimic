@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: e7107523ca0f7d64687863e425d1a3a9
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Core/Extensions/Vector2Ex.cs
+  uploadId: 937938

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b2bb49c7c3b6c8a45aeccdb15296541f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Editor/RTGridInspector.cs
+  uploadId: 937938

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 723bd8054a5fee34285d1a63b8695305
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Editor/RTCameraInspector.cs
+  uploadId: 937938

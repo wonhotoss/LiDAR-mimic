@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b56721e1177775e4eba488e3eba062ea
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Gizmos/Gizmos_View/ViewGizmoStyle.cs
+  uploadId: 937938

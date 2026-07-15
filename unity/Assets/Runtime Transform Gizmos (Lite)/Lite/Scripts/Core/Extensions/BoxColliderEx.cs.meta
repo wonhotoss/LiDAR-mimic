@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 2dbe2845576a8814eb2897d7cbcbffae
+AssetOrigin:
+  serializedVersion: 1
+  productId: 125537
+  packageName: Runtime Transform Gizmos (Lite)
+  packageVersion: 1.4.0
+  assetPath: Assets/Runtime Transform Gizmos (Lite)/Lite/Scripts/Core/Extensions/BoxColliderEx.cs
+  uploadId: 937938
