@@ -8,16 +8,25 @@ namespace LiDARMimic {
     // LiDAR camera: writes per-object id + NDC depth into id_rt.
     // Other cameras: draws the reconstructed pc_buffer as fixed-size point splats into the main target.
     public class lidar_render_feature : ScriptableRendererFeature {
+        [Tooltip("Assign the lidar/id_write shader (LiDAR pass: writes per-object id + NDC depth).")]
         public Shader write_shader;
+        [Tooltip("Assign the lidar/point shader (integration pass: draws the reconstructed points).")]
         public Shader point_shader;
-        public float depth_bias = 0.0002f; // sign is platform-dependent; flip if points are hidden by their own surface
+        [Tooltip("Clip-space z nudge toward the camera. Sign is platform-dependent; flip if points are hidden by their own surface.")]
+        public float depth_bias = 0.0002f;
 
         // depth_map mode globals: editor-tunable only (no runtime UI). The mode itself is switched at runtime via lidar.render_mode.
-        public float global_point_size = 4f;              // point size (px) used in depth_map mode
-        public Gradient depth_colormap = make_default_colormap(); // near -> far color ramp (jet-like by default)
-        public float depth_min = 0f;                      // range (m from sensor) mapped to the colormap start
-        public float depth_max = 50f;                     // range (m from sensor) mapped to the colormap end
-        public float depth_emission = 1f;                 // multiplies the colormap color; >1 feeds bloom (emissive glow)
+        [Header("depth_map mode")]
+        [Tooltip("Point size (px) used in depth_map mode.")]
+        public float global_point_size = 4f;
+        [Tooltip("Near -> far color ramp (jet-like by default).")]
+        public Gradient depth_colormap = make_default_colormap();
+        [Tooltip("Range (m from sensor) mapped to the colormap start.")]
+        public float depth_min = 0f;
+        [Tooltip("Range (m from sensor) mapped to the colormap end.")]
+        public float depth_max = 50f;
+        [Tooltip("Multiplies the colormap color; >1 feeds bloom (emissive glow).")]
+        public float depth_emission = 1f;
 
         Material write_mat;
         Material point_mat;

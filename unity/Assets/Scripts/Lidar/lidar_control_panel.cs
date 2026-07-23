@@ -8,15 +8,23 @@ using UnityEngine.UIElements;
 namespace LiDARMimic {
     // Runtime UI Toolkit control panel. Consolidates what used to live in the editor Custom Inspectors
     // and the IMGUI debug view so the LiDAR is fully controllable in a standalone build.
+    // Dependency: the Recording section's folder picker uses UnityStandaloneFileBrowser (gkngkc).
     [RequireComponent(typeof(UIDocument))]
     public class lidar_control_panel : MonoBehaviour {
-        public lidar device; // required
-        public lidar_capture capture; // required: recording target
-        public Material debug_mat; // required: blits device.id_rt into the viewable debug texture
-        public Camera view_camera; // required: the display camera; places the receiver hover marker over objects
-        public VisualTreeAsset color_row_template;    // required: per-object swatch + emission slider markup (edit in UXML)
-        public VisualTreeAsset color_picker_template; // required: R/G/B popup picker markup (edit in UXML)
-        public int view_size = 512; // resolution of the debug scratch texture
+        [Tooltip("Required: the lidar device this panel controls.")]
+        public lidar device;
+        [Tooltip("Required: the lidar_capture recording target.")]
+        public lidar_capture capture;
+        [Tooltip("Required: material that blits device.id_rt into the debug texture (assign lidar/id_debug).")]
+        public Material debug_mat;
+        [Tooltip("Required: the display camera; places the receiver hover marker over objects.")]
+        public Camera view_camera;
+        [Tooltip("Required: per-object swatch + emission slider markup (receiver_color_row.uxml).")]
+        public VisualTreeAsset color_row_template;
+        [Tooltip("Required: R/G/B popup picker markup (color_picker.uxml).")]
+        public VisualTreeAsset color_picker_template;
+        [Tooltip("Resolution of the debug scratch texture.")]
+        public int view_size = 512;
 
         const int preview_res = 256;
 

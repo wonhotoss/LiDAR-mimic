@@ -15,16 +15,27 @@ namespace LiDARMimic {
 
     // LiDAR device. Renders the scene from its viewpoint into id_rt (R = id, G = NDC depth); a compute pass
     // then reconstructs each scan ray into a world-space point (pc_buffer). Also generates the scan pattern.
+    // Scene wiring: put this on a Camera whose depth is LOWER than the main camera's, so it renders first.
+    // The camera's target texture and clear are configured in code (OnEnable); assign reconstruct_cs below.
     [RequireComponent(typeof(Camera))]
     public class lidar : MonoBehaviour {
+        [Header("Scan pattern")]
+        [Tooltip("Number of concentric rings in the scan pattern.")]
         public int ring_count = 32;
+        [Tooltip("Average points per ring; total point count = ring_count * points_per_ring.")]
         public int points_per_ring = 64;
-        public float radius = 0.95f; // max NDC radius of the outermost ring (<= 1)
-        public float ring_angle_offset = 0.1f; // radians added per successive ring so rings don't align radially
+        [Tooltip("Max NDC radius of the outermost ring (<= 1).")]
+        public float radius = 0.95f;
+        [Tooltip("Radians added per successive ring so rings don't align radially.")]
+        public float ring_angle_offset = 0.1f;
 
-        public point_render_mode render_mode = point_render_mode.depth_map; // global point style; switched at runtime
+        [Header("Rendering")]
+        [Tooltip("Global point style: per-object color/size, or a shared depth colormap. Switchable at runtime.")]
+        public point_render_mode render_mode = point_render_mode.depth_map;
 
-        public int map_resolution = 1024; // id_rt size; decoupled from screen (TODO2-implementation §3)
+        [Tooltip("id_rt size (px). Decoupled from screen resolution; not runtime-changeable (needs id_rt recreation).")]
+        public int map_resolution = 1024;
+        [Tooltip("Assign the lidar_reconstruct compute shader.")]
         public ComputeShader reconstruct_cs;
 
         public RenderTexture id_rt { get; private set; }

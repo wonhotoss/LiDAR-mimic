@@ -6,10 +6,14 @@ namespace LiDARMimic {
 
     // Marks a renderer as a point-cloud source for the LiDAR pass.
     // Mode drives the object's layer (main-camera visibility) and the per-object id pushed to the renderer's MPB.
+    // Scene wiring: pc_only mode moves the object to the "LidarOnly" layer, which must exist and be excluded from
+    // the main camera's cullingMask (and included in the LiDAR camera's) so the object shows as points only.
     [RequireComponent(typeof(Renderer))]
     public class lidar_receiver : MonoBehaviour {
-        [ColorUsage(false, true)] public Color color = Color.white; // HDR: the picker's Intensity is the initial per-object emission
-        public float size = 4f; // splat size in screen pixels; consumed by the integration pass
+        [Tooltip("Per-object point color (per_object mode). HDR: Intensity is the initial emission; >1 feeds bloom.")]
+        [ColorUsage(false, true)] public Color color = Color.white;
+        [Tooltip("Splat size in screen pixels (per_object mode).")]
+        public float size = 4f;
 
         // Assigned by lidar_receiver_registry on enable; used as the per-object id in the LiDAR/integration passes.
         public int id { get; set; }
