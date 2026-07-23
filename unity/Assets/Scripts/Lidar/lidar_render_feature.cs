@@ -12,17 +12,53 @@ namespace LiDARMimic {
         public Shader point_shader;
         public float depth_bias = 0.0002f; // sign is platform-dependent; flip if points are hidden by their own surface
 
+        // depth_map mode globals: editor-tunable only (no runtime UI). The mode itself is switched at runtime via lidar.render_mode.
+        public float global_point_size = 4f;              // point size (px) used in depth_map mode
+        public Gradient depth_colormap = make_default_colormap(); // near -> far color ramp (jet-like by default)
+        public float depth_min = 0f;                      // range (m from sensor) mapped to the colormap start
+        public float depth_max = 50f;                     // range (m from sensor) mapped to the colormap end
+        public float depth_emission = 1f;                 // multiplies the colormap color; >1 feeds bloom (emissive glow)
+
         Material write_mat;
         Material point_mat;
         ComputeBuffer style_buffer;
+        Texture2D colormap_tex; // depth_colormap baked into a 1D lookup sampled by the point shader
         id_pass id;
         point_pass points;
+
+        // Jet-like near(blue) -> far(red) ramp; a common depth visualization palette.
+        static Gradient make_default_colormap() {
+            var g = new Gradient();
+            g.SetKeys(
+                new[] {
+                    new GradientColorKey(new Color(0.2f, 0.3f, 1f), 0f),
+                    new GradientColorKey(new Color(0f, 1f, 1f), 0.25f),
+                    new GradientColorKey(new Color(0f, 1f, 0f), 0.5f),
+                    new GradientColorKey(new Color(1f, 1f, 0f), 0.75f),
+                    new GradientColorKey(new Color(1f, 0.15f, 0.15f), 1f)
+                },
+                new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
+            return g;
+        }
 
         public override void Create() {
             write_mat = CoreUtils.CreateEngineMaterial(write_shader);
             point_mat = CoreUtils.CreateEngineMaterial(point_shader);
             id = new id_pass(write_mat) { renderPassEvent = RenderPassEvent.AfterRenderingOpaques };
             points = new point_pass { renderPassEvent = RenderPassEvent.AfterRenderingOpaques };
+            bake_colormap();
+        }
+
+        // Bake depth_colormap into a small 1D lookup texture. Runs on Create (and re-runs on inspector edits in the editor).
+        void bake_colormap() {
+            const int w = 256;
+            if (colormap_tex == null) {
+                colormap_tex = new Texture2D(w, 1, TextureFormat.RGBA32, false) {
+                    name = "lidar_depth_colormap", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear
+                };
+            }
+            colormap_tex.SetPixels(Enumerable.Range(0, w).Select(i => depth_colormap.Evaluate(i / (w - 1f))).ToArray());
+            colormap_tex.Apply();
         }
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData data) {
@@ -31,9 +67,19 @@ namespace LiDARMimic {
             } else {
                 var device = lidar_registry.devices.FirstOrDefault();
                 if (device != null && device.points != null) {
+                    if (colormap_tex == null) { // Create's bake can be lost across domain reload / play-mode enter -> would bind gray
+                        bake_colormap();
+                    }
                     point_mat.SetBuffer("pc", device.points);
-                    point_mat.SetBuffer("style", build_style());
+                    point_mat.SetBuffer("style", build_style()); // always bound; used only in per_object mode
                     point_mat.SetFloat("depth_bias", depth_bias);
+                    point_mat.SetFloat("point_mode", device.render_mode == point_render_mode.depth_map ? 1f : 0f);
+                    point_mat.SetFloat("global_size", global_point_size);
+                    point_mat.SetVector("lidar_pos", device.transform.position);
+                    point_mat.SetFloat("depth_min", depth_min);
+                    point_mat.SetFloat("depth_max", depth_max);
+                    point_mat.SetFloat("depth_emission", depth_emission);
+                    point_mat.SetTexture("colormap", colormap_tex);
                     points.setup(point_mat, device.point_count);
                     renderer.EnqueuePass(points);
                 }
@@ -43,6 +89,7 @@ namespace LiDARMimic {
         protected override void Dispose(bool disposing) {
             CoreUtils.Destroy(write_mat);
             CoreUtils.Destroy(point_mat);
+            CoreUtils.Destroy(colormap_tex);
             style_buffer?.Release();
         }
 

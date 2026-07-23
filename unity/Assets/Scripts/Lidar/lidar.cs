@@ -10,6 +10,9 @@ namespace LiDARMimic {
         public uint id;
     }
 
+    // How the integration pass colors/sizes points: each object's own style, or a shared depth colormap.
+    public enum point_render_mode { per_object, depth_map }
+
     // LiDAR device. Renders the scene from its viewpoint into id_rt (R = id, G = NDC depth); a compute pass
     // then reconstructs each scan ray into a world-space point (pc_buffer). Also generates the scan pattern.
     [RequireComponent(typeof(Camera))]
@@ -18,6 +21,8 @@ namespace LiDARMimic {
         public int points_per_ring = 64;
         public float radius = 0.95f; // max NDC radius of the outermost ring (<= 1)
         public float ring_angle_offset = 0.1f; // radians added per successive ring so rings don't align radially
+
+        public point_render_mode render_mode = point_render_mode.depth_map; // global point style; switched at runtime
 
         public int map_resolution = 1024; // id_rt size; decoupled from screen (TODO2-implementation §3)
         public ComputeShader reconstruct_cs;
@@ -99,16 +104,26 @@ namespace LiDARMimic {
             }
         }
 
-        // Per-ray projXY in LiDAR NDC ([-1,1]^2). Concentric rings with a per-ring angular offset.
+        // Per-ray projXY in LiDAR NDC ([-1,1]^2). Concentric, equally-spaced rings with a per-ring angular offset.
+        // Each ring's point count is proportional to its annulus area (~2r+1) so areal density is uniform instead
+        // of crowding the center. Counts come from cumulative rounding of the area profile, so they always sum to
+        // exactly point_count (= ring_count * points_per_ring), which the buffers and dispatch rely on.
         public Vector2[] generate() {
-            Vector2 ring_point(int r, int p) {
-                var radius_r = radius * (r + 1) / ring_count;
-                var angle = p * (2f * Mathf.PI / points_per_ring) + r * ring_angle_offset;
+            var rings = ring_count;
+            var total = point_count;
+            int cum(int k) => Mathf.RoundToInt(total * ((float) (k * k) / (rings * rings))); // points through first k rings
+
+            Vector2 ring_point(int r, int count, int p) {
+                var radius_r = radius * (r + 1) / rings;
+                var angle = p * (2f * Mathf.PI / count) + r * ring_angle_offset;
                 return new Vector2(radius_r * Mathf.Cos(angle), radius_r * Mathf.Sin(angle));
             }
 
-            return Enumerable.Range(0, ring_count)
-                .SelectMany(r => Enumerable.Range(0, points_per_ring).Select(p => ring_point(r, p)))
+            return Enumerable.Range(0, rings)
+                .SelectMany(r => {
+                    var count = cum(r + 1) - cum(r);
+                    return Enumerable.Range(0, count).Select(p => ring_point(r, count, p));
+                })
                 .ToArray();
         }
     }

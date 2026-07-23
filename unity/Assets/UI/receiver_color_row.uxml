@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/lidar_control_panel.uss?fileID=7433441132597879392&amp;guid=a105d82c4fab4944397c7fbbc6a583c9&amp;type=3#lidar_control_panel"/>
+    <Style src="project://database/Assets/UI/styles.uss?fileID=7433441132597879392&amp;guid=10a8c05619a46204992d4934208891b1&amp;type=3#styles"/>
+    <ui:VisualElement name="color_editor" class="color_editor">
+        <ui:Label text="emission"/>
+        <ui:Slider name="emission" label="" low-value="1" high-value="8" class="color_slider emission_slider"/>
+        <ui:VisualElement name="swatch" class="color_swatch" style="flex-grow: 1;"/>
+    </ui:VisualElement>
+</ui:UXML>

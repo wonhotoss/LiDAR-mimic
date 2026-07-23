@@ -25,11 +25,19 @@
     margin-bottom: 10px;
 }
 
-.section_title {
-    color: rgb(200, 200, 200);
+.unity-foldout__text {
+    color: rgb(230, 230, 230);
     font-size: 13px;
     -unity-font-style: bold;
-    margin-bottom: 4px;
+}
+
+/* Collapse arrow: tint so it reads on the dark panel. */
+.unity-foldout__checkmark {
+    -unity-background-image-tint-color: rgb(220, 220, 220);
+}
+
+.unity-foldout__content {
+    margin-left: 8px;
 }
 
 .preview {
@@ -77,4 +85,135 @@
     font-size: 11px;
     color: rgb(180, 180, 180);
     white-space: normal;
+}
+
+/* Receivers section: an "All" row plus one row per object (name over three mode buttons). */
+.receiver_all {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.receiver_all_label {
+    width: 30px;
+    color: rgb(200, 200, 200);
+}
+
+.receiver_row {
+    margin-bottom: 6px;
+    padding: 6px;
+    border-width: 1px;
+    border-color: rgb(75, 75, 75);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.receiver_header {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.active_btn {
+    width: 34px;
+    height: 18px;
+    font-size: 10px;
+}
+
+/* Active state: green so on/off reads at a glance; inactive falls back to the default dark button. */
+.active_btn--on {
+    background-color: rgb(40, 140, 70);
+    border-color: rgb(70, 180, 100);
+    color: rgb(240, 255, 240);
+}
+
+.active_btn--on:hover {
+    background-color: rgb(46, 155, 78);
+}
+
+.receiver_name {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-left: 5px;
+    color: rgb(220, 220, 220);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mode_row {
+    flex-direction: row;
+}
+
+.mode_btn {
+    flex-grow: 1;
+    height: 20px;
+    font-size: 11px;
+    margin-right: 3px;
+}
+
+/* Per-object HDR color editor (per_object mode only): compact swatch + intensity; swatch opens the popup picker. */
+.color_editor {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.color_swatch {
+    width: 24px;
+    height: 16px;
+    margin-left: 6px;
+    border-width: 1px;
+    border-color: rgb(120, 120, 120);
+    border-radius: 2px;
+    background-color: rgb(255, 255, 255);
+}
+
+.emission_slider {
+    flex-grow: 1;
+}
+
+.color_slider {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+/* Popup R/G/B picker, shown over the panel like a context menu; closes on focus loss. */
+.color_picker {
+    position: absolute;
+    width: 160px;
+    padding: 6px;
+    background-color: rgba(22, 22, 22, 0.98);
+    border-width: 1px;
+    border-color: rgb(130, 130, 130);
+    border-radius: 4px;
+}
+
+/* The receiver's current mode; distinct from the momentary "All" buttons. */
+.mode_btn--active {
+    background-color: rgb(40, 110, 170);
+    border-color: rgb(80, 150, 210);
+    color: rgb(240, 240, 240);
+}
+
+.mode_btn--active:hover {
+    background-color: rgb(48, 122, 185);
+}
+
+/* Boxed object name overlaid on the hovered receiver's object. Opaque dark box + bright border + light text
+   so it reads on both dark and light scene content. Centered on the object via translate. */
+.object_marker {
+    position: absolute;
+    translate: -50% -50%;
+    padding: 2px 7px;
+    background-color: rgba(12, 12, 12, 0.92);
+    border-width: 2px;
+    border-color: rgb(255, 210, 40);
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
 }

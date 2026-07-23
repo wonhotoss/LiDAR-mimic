@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/lidar_control_panel.uss?fileID=7433441132597879392&amp;guid=a105d82c4fab4944397c7fbbc6a583c9&amp;type=3#lidar_control_panel"/>
+    <Style src="project://database/Assets/UI/styles.uss?fileID=7433441132597879392&amp;guid=10a8c05619a46204992d4934208891b1&amp;type=3#styles"/>
+    <ui:VisualElement name="color_picker" class="color_picker" style="width: 250px;">
+        <ui:Slider name="pick_r" label="R" low-value="0" high-value="1" class="color_slider"/>
+        <ui:Slider name="pick_g" label="G" low-value="0" high-value="1" class="color_slider"/>
+        <ui:Slider name="pick_b" label="B" low-value="0" high-value="1" class="color_slider"/>
+    </ui:VisualElement>
+</ui:UXML>

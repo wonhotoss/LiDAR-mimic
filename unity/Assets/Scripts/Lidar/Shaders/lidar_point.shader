@@ -22,6 +22,15 @@ Shader "lidar/point" {
             StructuredBuffer<float4> style; // per id: rgb = color, w = size (screen pixels)
             float depth_bias; // clip-space z nudge toward camera (sign is platform-dependent; tune in inspector)
 
+            float point_mode;   // 0 = per-object color/size, 1 = depth colormap
+            float global_size;  // point size (px) in depth-map mode
+            float3 lidar_pos;   // sensor position, for range-based coloring
+            float depth_min;    // range (m) mapped to colormap start
+            float depth_max;    // range (m) mapped to colormap end
+            float depth_emission; // multiplies the colormap color (>1 -> bloom)
+            Texture2D colormap;
+            SamplerState sampler_colormap;
+
             struct v_out {
                 float4 pos : SV_POSITION;
                 float3 color : TEXCOORD0;
@@ -36,15 +45,25 @@ Shader "lidar/point" {
                 uint pi = vid / 6;
                 uint corner = vid % 6;
                 pc_point p = pc[pi];
-                float4 s = style[p.id];
+
+                bool depth = point_mode > 0.5;
+                float size = depth ? global_size : style[p.id].w;
+                float3 color;
+                if (depth) {
+                    float d = distance(p.world, lidar_pos);
+                    float t = saturate((d - depth_min) / max(depth_max - depth_min, 1e-5));
+                    color = colormap.SampleLevel(sampler_colormap, float2(t, 0.5), 0).rgb * depth_emission;
+                } else {
+                    color = style[p.id].xyz;
+                }
 
                 float4 clip = TransformWorldToHClip(p.world);
-                clip.xy += corners[corner] * (s.w * 0.5) * 2.0 / _ScreenParams.xy * clip.w;
+                clip.xy += corners[corner] * (size * 0.5) * 2.0 / _ScreenParams.xy * clip.w;
                 clip.z += depth_bias * clip.w;
 
                 v_out o;
                 o.pos = (p.id == 0) ? (float4) 0 : clip; // degenerate for background / non-receiver
-                o.color = s.xyz;
+                o.color = color;
                 return o;
             }
 

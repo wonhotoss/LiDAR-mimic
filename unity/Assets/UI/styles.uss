@@ -1,0 +1,10 @@
+#color_editor #emission{
+    margin-right: 20px;
+}
+#color_picker Slider Label{
+    min-width: auto;
+}
+
+#color_picker Slider{
+    color: white;
+}

@@ -4,16 +4,29 @@
         <Style src="project://database/Assets/UI/lidar_control_panel.uss?fileID=7433441132597879392&amp;guid=a105d82c4fab4944397c7fbbc6a583c9&amp;type=3#lidar_control_panel"/>
         <ui:Label text="LiDAR Control" class="panel_title"/>
         <ui:ScrollView name="scroll" class="scroll" mode="Vertical">
-        <ui:VisualElement name="pattern_section" class="section">
-            <ui:Label text="Pattern" class="section_title"/>
+        <ui:Foldout name="point_render_section" text="Point Rendering" class="section">
+            <ui:VisualElement name="point_mode_row" class="mode_row">
+                <ui:Button name="pr_per_object" text="per-object" class="mode_btn"/>
+                <ui:Button name="pr_depth" text="depth-map" class="mode_btn"/>
+            </ui:VisualElement>
+        </ui:Foldout>
+        <ui:Foldout name="receivers_section" text="Receivers" class="section">
+            <ui:VisualElement name="receiver_all" class="receiver_all">
+                <ui:Label text="All:" class="receiver_all_label"/>
+                <ui:Button name="all_pc" text="pc-only" class="mode_btn"/>
+                <ui:Button name="all_both" text="both" class="mode_btn"/>
+                <ui:Button name="all_solid" text="solid" class="mode_btn"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="receiver_rows"/>
+        </ui:Foldout>
+        <ui:Foldout name="pattern_section" text="Pattern" class="section">
             <ui:SliderInt name="ring_count" label="Rings" low-value="1" high-value="128" show-input-field="true"/>
             <ui:SliderInt name="points_per_ring" label="Points / ring" low-value="1" high-value="256" show-input-field="true"/>
             <ui:Slider name="radius" label="Radius" low-value="0" high-value="1" show-input-field="true"/>
             <ui:Slider name="ring_angle_offset" label="Angle offset" low-value="0" high-value="1" show-input-field="true"/>
             <ui:Image name="pattern_preview" class="preview"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="recording_section" class="section">
-            <ui:Label text="Recording" class="section_title"/>
+        </ui:Foldout>
+        <ui:Foldout name="recording_section" text="Recording" class="section">
             <ui:TextField name="prefix" label="Prefix"/>
             <ui:FloatField name="capture_fps" label="Capture FPS"/>
             <ui:Toggle name="filter" label="Drop id==0"/>
@@ -22,11 +35,10 @@
             <ui:Button name="browse" text="Browse…" class="browse_btn"/>
             <ui:Button name="record_toggle" text="Start Recording" class="record_btn"/>
             <ui:Label name="status" text="" class="status"/>
-        </ui:VisualElement>
-        <ui:VisualElement name="debug_section" class="section">
-            <ui:Label text="Debug (LiDAR view)" class="section_title"/>
+        </ui:Foldout>
+        <ui:Foldout name="debug_section" text="Debug (LiDAR view)" class="section">
             <ui:Image name="debug_view" class="preview"/>
-        </ui:VisualElement>
+        </ui:Foldout>
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

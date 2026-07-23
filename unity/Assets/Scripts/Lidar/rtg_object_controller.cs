@@ -23,6 +23,13 @@ namespace LiDARMimic {
             Debug.Assert(RTG.get != null, "rtg_object_controller: RTG not in scene (run Tools/RTG/Initialize)");
             Debug.Assert(ui != null, "rtg_object_controller: ui (lidar_control_panel) not assigned");
             RTCamera.get.settings.targetCamera = pick_camera;
+
+            // Keep every LiDAR camera's id_rt pristine: RTG must not draw its grid/reference lines/gizmos/background
+            // into a device camera (they would land in id_rt as spurious ids and occlusion in the point cloud).
+            foreach (var d in lidar_registry.devices) {
+                RTCamera.get.SetCameraRenderConfig(d.GetComponent<Camera>(), new RTCameraRenderConfig { renderFlags = ECameraRenderFlags.None });
+            }
+
             move_gizmo = RTGizmos.get.CreateObjectMoveGizmo();
             rotate_gizmo = RTGizmos.get.CreateObjectRotateGizmo();
             scale_gizmo = RTGizmos.get.CreateObjectScaleGizmo();
