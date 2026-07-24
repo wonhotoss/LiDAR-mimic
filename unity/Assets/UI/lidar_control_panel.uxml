@@ -38,6 +38,7 @@
         </ui:Foldout>
         <ui:Foldout name="debug_section" text="Debug (LiDAR view)" class="section">
             <ui:Image name="debug_view" class="preview"/>
+            <ui:Button name="diag_analyze" text="Analyze (log to console)"/>
         </ui:Foldout>
         </ui:ScrollView>
     </ui:VisualElement>

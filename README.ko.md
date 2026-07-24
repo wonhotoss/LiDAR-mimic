@@ -2,6 +2,8 @@
 
 [English](README.md) · **한국어**
 
+🔗 **라이브 데모:** [wonhotoss.github.io/LiDAR-mimic](https://wonhotoss.github.io/LiDAR-mimic/) — WebGPU 지원 브라우저(최신 Chrome/Edge) 필요.
+
 일반 3D 렌더러로부터 **LiDAR 포인트클라우드 특유의 시각 연출**을 끌어내기 위한 프로그램 구조 제안.
 
 핵심 아이디어는 간단하다. 포인트클라우드를 얻기 위해 실제로 광선을 하나씩 추적(raycast)하지 않는다.
@@ -10,6 +12,9 @@
 
 이 문서는 플랫폼에 의존하지 않는다. 특정 엔진/API 용어 대신 렌더 파이프라인 용어로 동작을 기술한다.
 Unity 구현과 사용법은 [unity/README.ko.md](unity/README.ko.md)를 참고하라.
+
+이 프로젝트는 실제 프로덕션 환경에서의 시각 연출을 위해 작성되었으므로, 널리 쓰이는 플랫폼들에서의
+아이디어 적용과 라이브 데모를 포함해 실용성을 입증한다.
 
 ---
 

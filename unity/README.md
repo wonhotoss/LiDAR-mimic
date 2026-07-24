@@ -2,12 +2,15 @@
 
 **English** · [한국어](README.ko.md)
 
+🔗 **Live demo:** [wonhotoss.github.io/LiDAR-mimic/unity](https://wonhotoss.github.io/LiDAR-mimic/unity/) — needs a WebGPU-capable browser (recent Chrome/Edge).
+
 This is a **Unity 6 / URP 17 / RenderGraph** implementation of the platform-independent idea in the root
 [README.md](../README.md). This document covers (1) how the idea maps to Unity features, and (2) what can be
 controlled at runtime. (Scene wiring is part of the code/components, so it is described via each field's
 inspector help and code comments.)
 
 - Environment: **Unity 6000.4.10**, **URP 17.4.0**, RenderGraph API, Input System package.
+- Tested on: **Windows + desktop Chrome (WebGPU)**.
 - URP settings: RequireDepthTexture / RequireOpaqueTexture on, DepthPriming off, MSAA off, Forward+.
 - Code: [Assets/Scripts/Lidar/](Assets/Scripts/Lidar/), UI: [Assets/UI/](Assets/UI/).
 

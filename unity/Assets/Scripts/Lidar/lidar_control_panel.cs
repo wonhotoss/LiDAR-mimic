@@ -215,6 +215,7 @@ namespace LiDARMimic {
             scratch.Create();
             debug_view = root.Q<Image>("debug_view");
             debug_view.image = scratch;
+            root.Q<Button>("diag_analyze").clicked += () => lidar_diagnostics.run(device);
         }
 
         // One row per active receiver (object name + pc-only/both/solid buttons) plus the "All" buttons that

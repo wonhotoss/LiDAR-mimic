@@ -62,6 +62,12 @@ namespace LiDARMimic
         private void Awake()
         {
             Debug.Assert(ui != null, "OrbitCameraController: ui (lidar_control_panel) not assigned");
+            // 씬에 배치한 transform을 초기 오빗 상태로 채택한다. 그렇지 않으면 LateUpdate가 직렬화된
+            // yaw/pitch/focusPoint 기본값으로 시작 위치를 덮어써 배치한 뷰가 사라진다.
+            Vector3 e = transform.eulerAngles;
+            pitch = Mathf.Clamp(e.x > 180f ? e.x - 360f : e.x, minPitch, maxPitch);
+            yaw = e.y;
+            focusPoint = transform.position + transform.forward * distance;
             _currentDistance = distance;
             _currentFocus = focusPoint;
         }

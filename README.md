@@ -2,6 +2,8 @@
 
 **English** · [한국어](README.ko.md)
 
+🔗 **Live demo:** [wonhotoss.github.io/LiDAR-mimic](https://wonhotoss.github.io/LiDAR-mimic/) — needs a WebGPU-capable browser (recent Chrome/Edge).
+
 A program structure for producing **LiDAR-point-cloud-style visuals** from an ordinary 3D renderer.
 
 The core idea is simple. To obtain the point cloud we do **not** trace rays one by one (raycast).
@@ -12,6 +14,9 @@ entirely on the GPU, with no readback to the CPU.
 This document is platform-independent. It describes the behavior in render-pipeline terms rather than in
 any specific engine/API vocabulary. For the Unity implementation and usage, see
 [unity/README.md](unity/README.md).
+
+This project is written for visual staging in real production environments; it proves its practicality
+through applications of the idea on widely-used platforms, each with a live demo.
 
 ---
 

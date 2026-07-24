@@ -2,11 +2,14 @@
 
 [English](README.md) · **한국어**
 
+🔗 **라이브 데모:** [wonhotoss.github.io/LiDAR-mimic/unity](https://wonhotoss.github.io/LiDAR-mimic/unity/) — WebGPU 지원 브라우저(최신 Chrome/Edge) 필요.
+
 루트 [README.ko.md](../README.ko.md)의 플랫폼 독립적 아이디어를 **Unity 6 / URP 17 / RenderGraph**에서
 구현한 것이다. 이 문서는 (1) 아이디어가 Unity의 어떤 기능으로 매핑되는지, (2) 런타임에 무엇을
 조작할 수 있는지를 다룬다. (씬 배선은 코드/컴포넌트의 일부이므로 각 필드의 인스펙터 도움말과 코드 주석으로 기술한다.)
 
 - 환경: **Unity 6000.4.10**, **URP 17.4.0**, RenderGraph API, Input System 패키지.
+- 테스트 환경: **Windows + 데스크탑 Chrome (WebGPU)**.
 - URP 설정: RequireDepthTexture / RequireOpaqueTexture on, DepthPriming off, MSAA off, Forward+.
 - 코드: [Assets/Scripts/Lidar/](Assets/Scripts/Lidar/), UI: [Assets/UI/](Assets/UI/).
 
