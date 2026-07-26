@@ -19,7 +19,7 @@ namespace LiDARMimic {
         [Header("depth_map mode")]
         [Tooltip("Point size (px) used in depth_map mode.")]
         public float global_point_size = 4f;
-        [Tooltip("Near -> far color ramp (jet-like by default).")]
+        [Tooltip("Near -> far color ramp (jet-like by default). Sampled cyclically: end it on the start color to keep the loop seamless.")]
         public Gradient depth_colormap = make_default_colormap();
         [Tooltip("Range (m from sensor) mapped to the colormap start.")]
         public float depth_min = 0f;
@@ -27,6 +27,8 @@ namespace LiDARMimic {
         public float depth_max = 50f;
         [Tooltip("Multiplies the colormap color; >1 feeds bloom (emissive glow).")]
         public float depth_emission = 1f;
+        [Tooltip("Colormap scroll speed in cycles/sec (negative scrolls the other way). 0 = static.")]
+        public float depth_scroll_speed = 0.1f;
 
         Material write_mat;
         Material point_mat;
@@ -35,16 +37,17 @@ namespace LiDARMimic {
         id_pass id;
         point_pass points;
 
-        // Jet-like near(blue) -> far(red) ramp; a common depth visualization palette.
+        // Jet-like near(blue) -> far(red) ramp, closed back to blue at 1 so the scrolling lookup wraps without a seam.
         static Gradient make_default_colormap() {
             var g = new Gradient();
             g.SetKeys(
                 new[] {
                     new GradientColorKey(new Color(0.2f, 0.3f, 1f), 0f),
-                    new GradientColorKey(new Color(0f, 1f, 1f), 0.25f),
-                    new GradientColorKey(new Color(0f, 1f, 0f), 0.5f),
-                    new GradientColorKey(new Color(1f, 1f, 0f), 0.75f),
-                    new GradientColorKey(new Color(1f, 0.15f, 0.15f), 1f)
+                    new GradientColorKey(new Color(0f, 1f, 1f), 0.2f),
+                    new GradientColorKey(new Color(0f, 1f, 0f), 0.4f),
+                    new GradientColorKey(new Color(1f, 1f, 0f), 0.6f),
+                    new GradientColorKey(new Color(1f, 0.15f, 0.15f), 0.8f),
+                    new GradientColorKey(new Color(0.2f, 0.3f, 1f), 1f)
                 },
                 new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
             return g;
@@ -59,14 +62,15 @@ namespace LiDARMimic {
         }
 
         // Bake depth_colormap into a small 1D lookup texture. Runs on Create (and re-runs on inspector edits in the editor).
+        // Sampled as a period-1 ramp (texel i = gradient at i/w, Repeat wrap) so the scrolled lookup blends across the seam.
         void bake_colormap() {
             const int w = 256;
             if (colormap_tex == null) {
                 colormap_tex = new Texture2D(w, 1, TextureFormat.RGBA32, false) {
-                    name = "lidar_depth_colormap", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear
+                    name = "lidar_depth_colormap", wrapMode = TextureWrapMode.Repeat, filterMode = FilterMode.Bilinear
                 };
             }
-            colormap_tex.SetPixels(Enumerable.Range(0, w).Select(i => depth_colormap.Evaluate(i / (w - 1f))).ToArray());
+            colormap_tex.SetPixels(Enumerable.Range(0, w).Select(i => depth_colormap.Evaluate(i / (float) w)).ToArray());
             colormap_tex.Apply();
         }
 
@@ -88,6 +92,7 @@ namespace LiDARMimic {
                     point_mat.SetFloat("depth_min", depth_min);
                     point_mat.SetFloat("depth_max", depth_max);
                     point_mat.SetFloat("depth_emission", depth_emission);
+                    point_mat.SetFloat("depth_offset", Mathf.Repeat(Time.time * depth_scroll_speed, 1f));
                     point_mat.SetTexture("colormap", colormap_tex);
                     points.setup(point_mat, device.point_count);
                     renderer.EnqueuePass(points);

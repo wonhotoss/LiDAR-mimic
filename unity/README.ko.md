@@ -102,7 +102,8 @@ flowchart TD
 
 - **`per_object`** — 오브젝트(ID)별 색과 크기로 그린다. 색·크기는 각 `lidar_receiver`의 값에서 per-ID 스타일 버퍼로 모아 셰이더에 전달.
 - **`depth_map`** — 센서로부터의 거리로 컬러맵을 입힌다. 포인트 크기는 전역 고정값. 정점 셰이더에서
-  `distance(world, lidar_pos)`를 `[depth_min, depth_max]`로 정규화해 컬러맵 텍스처를 샘플한다.
+  `distance(world, lidar_pos)`를 `[depth_min, depth_max]`로 정규화한 뒤 시간 기반 위상을 더해
+  `frac(t + depth_offset)`으로 컬러맵 텍스처를 샘플한다.
 
 `depth_map` 관련 전역값은 **렌더 피처(`PC_Renderer` 상의 `lidar_render_feature`)에서 에디터 전용으로** 편집한다
 (런타임 UI에는 모드 토글만 있다):
@@ -110,12 +111,14 @@ flowchart TD
 | 필드 | 기본값 | 효과 |
 |---|---|---|
 | `global_point_size` | 4 | depth_map 모드의 포인트 크기(px) |
-| `depth_colormap` | jet 유사(근=파랑→원=빨강) | 거리→색 그라디언트 |
+| `depth_colormap` | jet 유사(파랑→빨강→다시 파랑) | 거리→색 그라디언트. 순환 샘플하므로 끝 색을 시작 색과 맞춘다 |
 | `depth_min` / `depth_max` | 0 / 50 | 컬러맵 양 끝에 매핑되는 거리(m) |
 | `depth_emission` | 1 | 컬러맵 색에 곱하는 값. >1이면 Bloom을 먹여 발광 |
+| `depth_scroll_speed` | 0.1 | 컬러맵 흐름 속도(cycles/sec). 음수면 반대 방향, 0이면 정지 |
 | `depth_bias` | 0.0002 | 클립 z를 카메라 쪽으로 미세 이동(both 모드 coplanar z-fighting 완화). **부호는 플랫폼 의존** — 포인트가 자기 표면에 가려지면 부호를 뒤집는다 |
 
-컬러맵은 256×1 룩업 텍스처로 baked되어 셰이더가 샘플한다.
+컬러맵은 256×1 룩업 텍스처로 baked되어 셰이더가 샘플한다. bake가 주기적이라(텍셀 `i` = 그라디언트 `i/256`,
+`Repeat` 래핑) 스크롤이 이음매를 지나갈 때도 필터링이 매끄럽다.
 
 ---
 

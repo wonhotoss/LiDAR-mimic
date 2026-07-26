@@ -28,6 +28,7 @@ Shader "lidar/point" {
             float depth_min;    // range (m) mapped to colormap start
             float depth_max;    // range (m) mapped to colormap end
             float depth_emission; // multiplies the colormap color (>1 -> bloom)
+            float depth_offset;   // colormap phase (cycles); the ramp is periodic, so scrolling it is seamless
             Texture2D colormap;
             SamplerState sampler_colormap;
 
@@ -51,7 +52,7 @@ Shader "lidar/point" {
                 float3 color;
                 if (depth) {
                     float d = distance(p.world, lidar_pos);
-                    float t = saturate((d - depth_min) / max(depth_max - depth_min, 1e-5));
+                    float t = frac(saturate((d - depth_min) / max(depth_max - depth_min, 1e-5)) + depth_offset);
                     color = colormap.SampleLevel(sampler_colormap, float2(t, 0.5), 0).rgb * depth_emission;
                 } else {
                     color = style[p.id].xyz;

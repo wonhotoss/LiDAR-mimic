@@ -112,8 +112,8 @@ default `depth_map`).
 - **`per_object`** — draws with each object's (ID's) color and size. Colors/sizes are gathered from each
   `lidar_receiver` into a per-ID style buffer and passed to the shader.
 - **`depth_map`** — applies a colormap by distance from the sensor. Point size is a global constant. In the
-  vertex shader, `distance(world, lidar_pos)` is normalized to `[depth_min, depth_max]` and used to sample
-  the colormap texture.
+  vertex shader, `distance(world, lidar_pos)` is normalized to `[depth_min, depth_max]`, offset by a
+  time-driven phase, and used to sample the colormap texture: `frac(t + depth_offset)`.
 
 The `depth_map` globals are edited **on the render feature (`lidar_render_feature` on `PC_Renderer`),
 editor-only** (the runtime UI only has the mode toggle):
@@ -121,12 +121,14 @@ editor-only** (the runtime UI only has the mode toggle):
 | Field | Default | Effect |
 |---|---|---|
 | `global_point_size` | 4 | point size (px) in depth_map mode |
-| `depth_colormap` | jet-like (near=blue → far=red) | distance→color gradient |
+| `depth_colormap` | jet-like (blue → red → back to blue) | distance→color gradient. Sampled cyclically, so end it on the start color |
 | `depth_min` / `depth_max` | 0 / 50 | distances (m) mapped to the colormap ends |
 | `depth_emission` | 1 | multiplier on the colormap color; >1 feeds Bloom (glow) |
+| `depth_scroll_speed` | 0.1 | colormap scroll in cycles/sec (negative reverses); 0 = static |
 | `depth_bias` | 0.0002 | small clip-z nudge toward the camera (eases coplanar z-fighting in `both` mode). **Sign is platform-dependent** — flip it if points are hidden by their own surface |
 
-The colormap is baked into a 256×1 lookup texture and sampled by the shader.
+The colormap is baked into a 256×1 lookup texture and sampled by the shader. The bake is periodic (texel `i`
+= gradient at `i/256`, `Repeat` wrap), so the ramp filters seamlessly across the wrap point as it scrolls.
 
 ---
 
