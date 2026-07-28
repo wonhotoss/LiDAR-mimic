@@ -4,9 +4,7 @@
 
 🔗 **Live demo:** [wonhotoss.github.io/LiDAR-mimic](https://wonhotoss.github.io/LiDAR-mimic/) — needs a WebGPU-capable browser (recent Chrome/Edge).
 
-<video src="https://github.com/wonhotoss/LiDAR-mimic/raw/main/docs/demo.mp4" controls loop muted playsinline width="100%"></video>
-
-▶️ Clip: [docs/demo.mp4](docs/demo.mp4) (if the player above does not appear).
+https://github.com/user-attachments/assets/2b1bf726-20d3-43e3-9b7a-c31da47b60f8
 
 A program structure for producing **LiDAR-point-cloud-style visuals** from an ordinary 3D renderer.
 
