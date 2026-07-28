@@ -16,7 +16,11 @@
   @media (prefers-color-scheme: light) { body { background: #f6f7f9; color: #1a1c20; } }
   main { width: min(680px, 90vw); padding: 2rem 0; }
   h1 { font-size: 1.9rem; margin: 0 0 .25rem; letter-spacing: -0.01em; }
-  p.lead { margin: 0 0 1.75rem; opacity: .75; }
+  p.lead { margin: 0 0 1.5rem; opacity: .75; }
+  video {
+    display: block; width: 100%; margin: 0 0 1.75rem; border-radius: 10px;
+    border: 1px solid rgba(128,128,128,.28); background: #000;
+  }
   ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
   a.card {
     display: block; padding: 1rem 1.15rem; border-radius: 10px; text-decoration: none;
@@ -35,6 +39,7 @@
 <main>
   <h1>LiDAR-mimic</h1>
   <p class="lead">LiDAR-point-cloud-style visuals from an ordinary 3D renderer — real-time, GPU-only, no readback.</p>
+  <video src="demo.mp4" controls loop muted playsinline autoplay></video>
   <ul>
     <li><a class="card" href="unity/">
       <div class="t">Unity (URP · WebGPU) →</div>

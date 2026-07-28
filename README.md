@@ -4,6 +4,10 @@
 
 🔗 **Live demo:** [wonhotoss.github.io/LiDAR-mimic](https://wonhotoss.github.io/LiDAR-mimic/) — needs a WebGPU-capable browser (recent Chrome/Edge).
 
+<video src="https://github.com/wonhotoss/LiDAR-mimic/raw/main/docs/demo.mp4" controls loop muted playsinline width="100%"></video>
+
+▶️ Clip: [docs/demo.mp4](docs/demo.mp4) (if the player above does not appear).
+
 A program structure for producing **LiDAR-point-cloud-style visuals** from an ordinary 3D renderer.
 
 The core idea is simple. To obtain the point cloud we do **not** trace rays one by one (raycast).
