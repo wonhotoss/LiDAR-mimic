@@ -147,8 +147,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2648774, y: 0.21036294, z: -0.05932848, w: 0.93918455}
-  m_LocalPosition: {x: -3.7012858, y: 5.164558, z: -8.789726}
+  m_LocalRotation: {x: 0.24885926, y: -0.6555959, z: 0.24348834, w: 0.6700572}
+  m_LocalPosition: {x: 6.123848, y: 6.2652087, z: -0.6221634}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -847,7 +847,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 236043087}
@@ -952,7 +952,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 3, y: 1, z: 3}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1496107497}
@@ -1161,8 +1161,8 @@ Transform:
   m_GameObject: {fileID: 3600}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.38268292, z: -0, w: 0.92387974}
-  m_LocalPosition: {x: -0.14, y: 1.49, z: 0.59}
-  m_LocalScale: {x: 0.9000001, y: 3, z: 0.9000001}
+  m_LocalPosition: {x: -0.14, y: 1.005, z: 0.59}
+  m_LocalScale: {x: 0.9000001, y: 2, z: 0.9000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 826533651}
@@ -1424,13 +1424,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1beee1f881cb3ef469b1af776a427715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LiDARMimic.lidar
-  channel_count: 128
-  azimuth_steps: 900
-  elevation_min: -4.4
-  elevation_max: 90.5
+  channel_count: 100
+  azimuth_steps: 300
+  elevation_min: 0
+  elevation_max: 90
   channel_azimuth_offset: 0
   scan_hz: 10
-  sweep: 1
+  sweep: 0
   scan_mask:
     serializedVersion: 2
     m_Bits: 119
@@ -1448,13 +1448,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 103073407}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!114 &103073413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1488,9 +1488,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LiDARMimic.lidar_frustum_viz
   line_material: {fileID: 2100000, guid: fc55feedeab43cb4e86886036794ce32, type: 2}
   marker_material: {fileID: 2100000, guid: 0662f442d48229241902b4c5fdc532fb, type: 2}
-  frustum_length: 12
+  frustum_length: 1.5
   marker_size: 0.4
-  line_width: 0.03
+  meridian_count: 6
+  latitude_step: 45
   viz_layer: Viz
 --- !u!4 &107515482 stripped
 Transform:
@@ -3326,8 +3327,8 @@ Transform:
   m_GameObject: {fileID: 1839594650}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8, y: 0.01, z: -2}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 0.32, y: 0.01, z: -1.72}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1324801401}
@@ -3451,8 +3452,8 @@ Transform:
   m_GameObject: {fileID: 1919970514}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.56, y: 1.98, z: 3.41}
-  m_LocalScale: {x: 0.5, y: 2, z: 0.5}
+  m_LocalPosition: {x: -0.56, y: 0.998, z: 3.41}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 826533651}

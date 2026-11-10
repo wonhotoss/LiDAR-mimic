@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering;
+using RTGLite;
 
 namespace LiDARMimic {
     // One reconstructed LiDAR point: world position + originating object id (0 = background / non-receiver).
@@ -96,6 +97,13 @@ namespace LiDARMimic {
                     c.targetTexture = face_rt[i];
                     return c;
                 }).ToArray();
+                // RTG's render feature draws its grid, background and gizmos on every camera it has not been told
+                // about, after id_pass, alpha-blending into the id/range buffer. Opt the faces out.
+                if (RTG.get != null) {
+                    foreach (var c in face_cams) {
+                        RTCamera.get.SetCameraRenderConfig(c, new RTCameraRenderConfig { renderFlags = ECameraRenderFlags.None });
+                    }
+                }
 
                 pattern_buffer = new ComputeBuffer(point_count, sizeof(float) * 3);
                 pc_buffer = new ComputeBuffer(point_count, Marshal.SizeOf<pc_point>());
