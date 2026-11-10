@@ -19,17 +19,19 @@ Shader "lidar/id_write" {
             CBUFFER_END
 
             struct v_in { float4 pos : POSITION; };
-            struct v_out { float4 pos : SV_POSITION; };
+            struct v_out { float4 pos : SV_POSITION; float3 world : TEXCOORD0; };
 
             v_out vert(v_in v) {
                 v_out o;
-                o.pos = TransformObjectToHClip(v.pos.xyz);
+                o.world = TransformObjectToWorld(v.pos.xyz);
+                o.pos = TransformWorldToHClip(o.world);
                 return o;
             }
 
-            // R = originating object id, G = NDC depth (for world reconstruction in the compute pass).
+            // R = originating object id, G = range (m) from the sensor. The face camera sits at the sensor origin,
+            // so _WorldSpaceCameraPos is the sensor position.
             float2 frag(v_out i) : SV_Target {
-                return float2(_LidarID, i.pos.z);
+                return float2(_LidarID, distance(i.world, _WorldSpaceCameraPos));
             }
             ENDHLSL
         }

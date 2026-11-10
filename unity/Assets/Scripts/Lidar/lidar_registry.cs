@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace LiDARMimic {
-    // Tracks active lidar devices so the render feature (main camera) can reach the current device's buffers.
+    // Tracks active lidar devices so the render feature can tell face cameras apart and reach the device's buffers.
     static class lidar_registry {
         static readonly List<lidar> active = new();
 

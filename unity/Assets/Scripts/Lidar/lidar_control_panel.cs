@@ -15,7 +15,7 @@ namespace LiDARMimic {
         public lidar device;
         [Tooltip("Required: the lidar_capture recording target.")]
         public lidar_capture capture;
-        [Tooltip("Required: material that blits device.id_rt into the debug texture (assign lidar/id_debug).")]
+        [Tooltip("Required: material that blits device.id_rt (the +Z face) into the debug texture (assign lidar/id_debug).")]
         public Material debug_mat;
         [Tooltip("Required: the display camera; places the receiver hover marker over objects.")]
         public Camera view_camera;
@@ -86,7 +86,7 @@ namespace LiDARMimic {
 
         // Blit runs in Update into a persistent scratch texture the debug Image samples (§13 debug aid).
         void Update() {
-            if (device.id_rt != null) { // null only before the LiDAR camera's first render
+            if (device.faces != null) { // null while the device is disabled (no face RTs)
                 Graphics.Blit(device.id_rt, scratch, debug_mat);
                 debug_view.MarkDirtyRepaint();
             }
@@ -106,34 +106,49 @@ namespace LiDARMimic {
             hover_marker.style.display = show_marker ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        // Pattern parameters rebuild the ray buffer; scan_hz and sweep only steer the per-frame sector, so they bind directly.
         void bind_pattern(VisualElement root) {
-            var ring_count = root.Q<SliderInt>("ring_count");
-            var points_per_ring = root.Q<SliderInt>("points_per_ring");
-            var radius = root.Q<Slider>("radius");
-            var ring_angle_offset = root.Q<Slider>("ring_angle_offset");
+            var channel_count = root.Q<SliderInt>("channel_count");
+            var azimuth_steps = root.Q<SliderInt>("azimuth_steps");
+            var elevation_min = root.Q<Slider>("elevation_min");
+            var elevation_max = root.Q<Slider>("elevation_max");
+            var channel_azimuth_offset = root.Q<Slider>("channel_azimuth_offset");
+            var scan_hz = root.Q<Slider>("scan_hz");
+            var sweep = root.Q<Toggle>("sweep");
             pattern_preview = root.Q<Image>("pattern_preview");
 
-            ring_count.value = device.ring_count;
-            points_per_ring.value = device.points_per_ring;
-            radius.value = device.radius;
-            ring_angle_offset.value = device.ring_angle_offset;
+            channel_count.value = device.channel_count;
+            azimuth_steps.value = device.azimuth_steps;
+            elevation_min.value = device.elevation_min;
+            elevation_max.value = device.elevation_max;
+            channel_azimuth_offset.value = device.channel_azimuth_offset;
+            scan_hz.value = device.scan_hz;
+            sweep.value = device.sweep;
 
-            ring_count.RegisterValueChangedCallback(e => {
-                device.ring_count = e.newValue;
+            channel_count.RegisterValueChangedCallback(e => {
+                device.channel_count = e.newValue;
                 apply_pattern();
             });
-            points_per_ring.RegisterValueChangedCallback(e => {
-                device.points_per_ring = e.newValue;
+            azimuth_steps.RegisterValueChangedCallback(e => {
+                device.azimuth_steps = e.newValue;
                 apply_pattern();
             });
-            radius.RegisterValueChangedCallback(e => {
-                device.radius = e.newValue;
+            elevation_min.RegisterValueChangedCallback(e => {
+                device.elevation_min = Mathf.Min(e.newValue, device.elevation_max);
+                elevation_min.SetValueWithoutNotify(device.elevation_min);
                 apply_pattern();
             });
-            ring_angle_offset.RegisterValueChangedCallback(e => {
-                device.ring_angle_offset = e.newValue;
+            elevation_max.RegisterValueChangedCallback(e => {
+                device.elevation_max = Mathf.Max(e.newValue, device.elevation_min);
+                elevation_max.SetValueWithoutNotify(device.elevation_max);
                 apply_pattern();
             });
+            channel_azimuth_offset.RegisterValueChangedCallback(e => {
+                device.channel_azimuth_offset = e.newValue;
+                apply_pattern();
+            });
+            scan_hz.RegisterValueChangedCallback(e => device.scan_hz = e.newValue);
+            sweep.RegisterValueChangedCallback(e => device.sweep = e.newValue);
 
             rebuild_preview();
         }
@@ -366,19 +381,20 @@ namespace LiDARMimic {
             update_object_color_visibility(); // match the current global point-render mode
         }
 
-        // Plot generate()'s projXY into a point-filtered texture: black bg, white points (§12, shared source).
+        // Plot generate()'s directions as an equirectangular chart (x = azimuth 0..360°, y = elevation -90..90°):
+        // black bg, white points (shared source with the GPU pattern). At sensor-class density the band fills solid.
         void rebuild_preview() {
             if (pattern_tex == null) {
                 pattern_tex = new Texture2D(preview_res, preview_res, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
                 pattern_preview.image = pattern_tex;
             }
             var pixels = Enumerable.Repeat(Color.black, preview_res * preview_res).ToArray();
-            foreach (var xy in device.generate()) {
-                var px = Mathf.RoundToInt((xy.x * 0.5f + 0.5f) * (preview_res - 1));
-                var py = Mathf.RoundToInt((xy.y * 0.5f + 0.5f) * (preview_res - 1));
-                if (px >= 0 && px < preview_res && py >= 0 && py < preview_res) {
-                    pixels[py * preview_res + px] = Color.white;
-                }
+            foreach (var d in device.generate()) {
+                var azimuth = Mathf.Repeat(Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg, 360f);
+                var elevation = Mathf.Asin(Mathf.Clamp(d.y, -1f, 1f)) * Mathf.Rad2Deg;
+                var px = Mathf.RoundToInt(azimuth / 360f * (preview_res - 1));
+                var py = Mathf.RoundToInt((elevation + 90f) / 180f * (preview_res - 1));
+                pixels[py * preview_res + px] = Color.white;
             }
             pattern_tex.SetPixels(pixels);
             pattern_tex.Apply();

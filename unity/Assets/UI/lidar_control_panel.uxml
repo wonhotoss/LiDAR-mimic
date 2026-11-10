@@ -20,10 +20,13 @@
             <ui:VisualElement name="receiver_rows"/>
         </ui:Foldout>
         <ui:Foldout name="pattern_section" text="Pattern" class="section">
-            <ui:SliderInt name="ring_count" label="Rings" low-value="1" high-value="128" show-input-field="true"/>
-            <ui:SliderInt name="points_per_ring" label="Points / ring" low-value="1" high-value="256" show-input-field="true"/>
-            <ui:Slider name="radius" label="Radius" low-value="0" high-value="1" show-input-field="true"/>
-            <ui:Slider name="ring_angle_offset" label="Angle offset" low-value="0" high-value="1" show-input-field="true"/>
+            <ui:SliderInt name="channel_count" label="Channels" low-value="1" high-value="256" show-input-field="true"/>
+            <ui:SliderInt name="azimuth_steps" label="Azimuth steps" low-value="1" high-value="2048" show-input-field="true"/>
+            <ui:Slider name="elevation_min" label="Elevation min" low-value="-90" high-value="90" show-input-field="true"/>
+            <ui:Slider name="elevation_max" label="Elevation max" low-value="-90" high-value="90" show-input-field="true"/>
+            <ui:Slider name="channel_azimuth_offset" label="Az. stagger" low-value="0" high-value="1" show-input-field="true"/>
+            <ui:Slider name="scan_hz" label="Scan Hz" low-value="0" high-value="30" show-input-field="true"/>
+            <ui:Toggle name="sweep" label="Sweep"/>
             <ui:Image name="pattern_preview" class="preview"/>
         </ui:Foldout>
         <ui:Foldout name="recording_section" text="Recording" class="section">

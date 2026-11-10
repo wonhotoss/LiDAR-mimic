@@ -5,22 +5,54 @@ struct pc_point {
     uint id;
 };
 
-Texture2D<float4> id_map; // R = id, G = NDC depth
-StructuredBuffer<float2> pattern; // per-ray NDC xy
+// Cube faces in CubemapFace order (+X, -X, +Y, -Y, +Z, -Z): R = id, G = range (m). Separate resources, not an
+// array: texture arrays cannot be dynamically indexed.
+Texture2D<float4> face0;
+Texture2D<float4> face1;
+Texture2D<float4> face2;
+Texture2D<float4> face3;
+Texture2D<float4> face4;
+Texture2D<float4> face5;
+StructuredBuffer<float3> pattern; // per-ray lidar-local unit direction, azimuth-major
 RWStructuredBuffer<pc_point> pc;
-float4x4 inv_vp; // inverse(GPU LiDAR view-projection)
-uint count;
+float4x4 face_vp[6]; // GPU view-projection of each face camera
+float4x4 lidar_to_world; // rotation only
+float3 lidar_pos;
+uint offset; // first ray of this dispatch (sector start)
+uint count; // rays in this dispatch
 uint res;
+
+// Same tie rule as lidar.face_of (C#): x >= y >= z, and >= 0 picks the positive face.
+uint face_of(float3 d) {
+    float3 a = abs(d);
+    return a.x >= a.y && a.x >= a.z ? (d.x >= 0 ? 0 : 1)
+         : a.y >= a.z ? (d.y >= 0 ? 2 : 3)
+         : (d.z >= 0 ? 4 : 5);
+}
+
+float4 load(uint f, int2 px) {
+    switch (f) {
+        case 0: return face0.Load(int3(px, 0));
+        case 1: return face1.Load(int3(px, 0));
+        case 2: return face2.Load(int3(px, 0));
+        case 3: return face3.Load(int3(px, 0));
+        case 4: return face4.Load(int3(px, 0));
+        default: return face5.Load(int3(px, 0));
+    }
+}
 
 [numthreads(64, 1, 1)]
 void reconstruct(uint3 tid : SV_DispatchThreadID) {
-    uint i = tid.x;
-    if (i < count) {
-        float2 ndc = pattern[i];
-        int2 px = int2((ndc * 0.5 + 0.5) * res);
-        float4 s = id_map.Load(int3(px, 0));
-        float4 wh = mul(inv_vp, float4(ndc, s.g, 1.0)); // (ndc.xy, ndc depth) -> world
-        pc[i].world = wh.xyz / wh.w;
+    if (tid.x < count) {
+        uint i = offset + tid.x;
+        float3 d = pattern[i];
+        uint f = face_of(d);
+        float3 dw = mul((float3x3) lidar_to_world, d);
+        float4 clip = mul(face_vp[f], float4(lidar_pos + dw, 1.0)); // w > 0: d lies in that face's forward half-space
+        float2 ndc = clip.xy / clip.w;
+        int2 px = min(int2((ndc * 0.5 + 0.5) * res), int2(res - 1, res - 1)); // ndc hits exactly +1 on face edges
+        float4 s = load(f, px);
+        pc[i].world = lidar_pos + dw * s.g;
         pc[i].id = (uint) round(s.r);
     }
 }

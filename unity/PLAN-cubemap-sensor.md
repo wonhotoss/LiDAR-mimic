@@ -1,7 +1,7 @@
 # Plan · cubemap sensor, spin pattern, per-frame sweep
 
-**Status:** not started. Written 2026-11-08. Delete this file once the change lands and both READMEs are
-updated.
+**Status:** implemented on `claude/sleepy-feynman-ftufjw` (2026-11-10), READMEs updated; **editor verification
+pending** (checklist at the end, scene wiring below). Delete this file once verified.
 
 Replace the single perspective sensor camera with a **cube of 90° face cameras**, define the scan pattern as
 **directions** (azimuth × elevation, like a spinning LiDAR) instead of projection-plane XY, and in realtime

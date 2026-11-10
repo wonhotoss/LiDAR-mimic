@@ -3,6 +3,11 @@
 **Status:** not started. Written 2026-08-22. Delete this file once the change lands and `unity/README.md` is
 updated.
 
+**Re-base note (2026-11-10):** the cubemap sensor landed (`PLAN-cubemap-sensor.md`). `id_rt` is now six per-face
+RTs (`face_rt[0..5]`, `id_rt` aliases the +Z face), so edit 1 applies to each face, and `inv_vp` no longer exists
+(reconstruction is `lidar_pos + dir × range`), so edit 2 only adds the `oct_decode` line to the existing single
+`Load`. Everything else below still holds.
+
 Carry a per-point surface normal from the sensor-view raster through to the splat and the PLY export, then
 use it to shade `per_object` mode from the sensor's own viewpoint. Five ordered edits, one breaking
 dependency, `depth_map` mode untouched.

@@ -20,10 +20,10 @@ inspector help and code comments.)
 
 | Concept (root README) | Unity implementation |
 |---|---|
-| Sensor = camera | A dedicated Camera with the `lidar` component. Renders into its own `RenderTexture` (`id_rt`). |
-| Sensor-view pass (depth+ID prepass) | The `id_pass` in `lidar_render_feature`. Draws the scene with the override material `lidar/id_write`, writing R=ID, G=NDC depth. |
-| Offscreen buffer | `id_rt` — an **RGFloat** RenderTexture (R=ID as float, G=32-bit NDC depth). Independent of screen resolution (`map_resolution`, default 1024²). |
-| Reconstruction pass (compute) | `lidar_reconstruct.compute`. Dispatched right after the LiDAR camera renders, via `RenderPipelineManager.endCameraRendering`. |
+| Sensor = a point with six 90° faces | A plain GameObject with the `lidar` component (its transform is the sensor pose). At runtime it creates six child face Cameras (`CubemapFace` order), each rendering into its own `RenderTexture` (`face_rt[i]`). Faces no ray selects are disabled. |
+| Sensor-view pass (range+ID prepass) | The `id_pass` in `lidar_render_feature`, run on every face camera. Draws the scene with the override material `lidar/id_write`, writing R=ID, G=range (m). |
+| Offscreen buffer | `face_rt[0..5]` — **RGFloat** RenderTextures (R=ID as float, G=range). Independent of screen resolution (`map_resolution` per face, default 512²). `id_rt` is the +Z face (debug view, diagnostics). |
+| Reconstruction pass (compute) | `lidar_reconstruct.compute`. Dispatched once every enabled face has rendered (counted in `RenderPipelineManager.endCameraRendering`). With `sweep` on, only the azimuth sector swept this frame. |
 | Point buffer | `ComputeBuffer<pc_point>` (`pc_point = { float3 world; uint id }`). No readback. |
 | Integration render pass | The `point_pass` in `lidar_render_feature`. Splats via `DrawProcedural` (6×N triangles) on the main camera. Shader `lidar/point`. |
 | Object ID | Assigned if the `lidar_receiver` component is present. `lidar_receiver_registry` auto-issues a small sequential integer ≥ 1 on enable. ID 0 = background / non-receiver. |
@@ -34,9 +34,9 @@ A single `ScriptableRendererFeature` (`lidar_render_feature`) branches by camera
 
 ```mermaid
 flowchart TD
-    subgraph LC["LiDAR camera (lower depth → renders first)"]
-        L1["id_pass<br/>draws all opaque with lidar/id_write<br/>→ id_rt (R=ID, G=NDC depth)"]
-        L2["compute reconstruct<br/>dispatched in endCameraRendering<br/>per ray: id_map.Load → inverse(VP) → world"]
+    subgraph LC["LiDAR face cameras ×6 (lower depth → render first)"]
+        L1["id_pass<br/>draws all opaque with lidar/id_write<br/>→ face_rt[i] (R=ID, G=range)"]
+        L2["compute reconstruct<br/>dispatched after the last face<br/>per ray: dir → face → Load → origin + dir×range"]
         L1 --> L2
     end
     subgraph MC["Main camera (higher depth → renders later)"]
@@ -48,21 +48,24 @@ flowchart TD
     L2 -.->|"optional: lidar_capture async readback"| CAP["PLY sequence"]
 ```
 
-1. **LiDAR camera** — enqueues only `id_pass`. At `AfterRenderingOpaques` it draws all scene opaque with the
-   override material into `id_rt`, writing ID+depth. `lidar/id_write` uses `ZWrite Off / ZTest LEqual`,
-   overlaying on the depth the camera's opaque pass already wrote so only the nearest surface's ID remains.
-   The ID is read from the renderer's `MaterialPropertyBlock` (`_LidarID`).
-2. **Reconstruction (compute)** — dispatched outside RenderGraph right after `id_rt` is filled. Per ray, it
-   reads ID·depth via `id_map.Load` (point sample) and reconstructs world space with `inverse(VP)`
-   (= the inverse of `GL.GetGPUProjectionMatrix(proj, false) * worldToCamera`), writing into the `pc` buffer.
-   `renderIntoTexture` must be **false** (true flips Y and inverts the reconstruction vertically).
+1. **LiDAR face cameras** — each enqueues only `id_pass`. At `AfterRenderingOpaques` it draws all scene
+   opaque with the override material into that face's `face_rt`, writing ID+range. `lidar/id_write` uses
+   `ZWrite Off / ZTest LEqual`, overlaying on the depth the camera's opaque pass already wrote so only the
+   nearest surface's ID remains. The ID is read from the renderer's `MaterialPropertyBlock` (`_LidarID`);
+   the range is `distance(world, _WorldSpaceCameraPos)`, the face camera sitting at the sensor origin.
+2. **Reconstruction (compute)** — dispatched outside RenderGraph once the last enabled face has rendered.
+   Per ray (a lidar-local direction), it picks the face by dominant axis, projects the direction with that
+   face's `GL.GetGPUProjectionMatrix(proj, false) * worldToCamera` to a texel, reads ID·range via `Load`
+   (point sample) and writes `lidar_pos + dir × range` into the `pc` buffer. The C# and HLSL `face_of`
+   share one tie rule so a face disabled on the CPU is never read on the GPU.
 3. **Main camera opaque** — URP default. Ordinary objects only (a layer filter excludes pc-only objects).
 4. **Integration draw** — `AfterRenderingOpaques`. Reads the `pc` buffer and splats fixed screen-size,
    axis-aligned squares directly into the main color+depth attachment. Depth read/write on → occlusion
    handled by the hardware depth test.
 
-The execution order of the LiDAR and main cameras is guaranteed by the **camera `depth` value** (LiDAR camera
-depth < main camera depth).
+The execution order of the face and main cameras is guaranteed by the **camera `depth` value**
+(`lidar.camera_depth` < main camera depth). `scan_mask` is the faces' culling mask; exclude `Viz` so the
+sensor does not scan its own marker.
 
 ---
 
@@ -91,9 +94,17 @@ the object's layer and sets the MPB value, without re-wiring the scene/prefab/ca
 ## 3. Scan pattern
 
 `generate()` in [Assets/Scripts/Lidar/lidar.cs](Assets/Scripts/Lidar/lidar.cs) builds the array of ray
-projection XY. It is a **concentric-ring pattern** where each ring's point count is proportional to the ring's
-area (≈2r+1), so density is **uniform rather than crowding the center**. The total point count always equals
-exactly `ring_count × points_per_ring` (buffer allocation and dispatch depend on this).
+directions (lidar-local unit vectors). It is a **spinning-sensor pattern**: `channel_count` elevation layers
+equally spaced from `elevation_min` to `elevation_max`, each fired at `azimuth_steps` columns around 360°,
+optionally staggered per channel by `channel_azimuth_offset`. The defaults are a Hesai JT128
+(128 × 900, -4.4° … 90.5°). The array is azimuth-major (`index = azimuth × channel_count + channel`) so a
+sweep sector is a contiguous range, and its length always equals exactly `azimuth_steps × channel_count`
+(buffer allocation and dispatch depend on this). Density is deliberately **not** uniform: channels are rings
+of constant elevation, which is what a spinning scan looks like.
+
+**Sweep.** With `sweep` on, each frame reconstructs only the columns the motor advanced
+(`scan_hz × Time.deltaTime` revolutions); the rest of the point buffer persists, so a revolution builds up
+over several frames. Off, the whole buffer is rebuilt every frame.
 
 `generate()` is the **single source**: both the GPU buffer used for the actual scan and the UI's pattern
 preview image are drawn from the same array.
@@ -159,11 +170,13 @@ Live-bound to the `lidar` device. A value change → `rebuild()` → preview ref
 
 | Control | Range | Target |
 |---|---|---|
-| `Rings` | 1–128 | `ring_count` — number of concentric rings |
-| `Points / ring` | 1–256 | `points_per_ring` — average points per ring (total = Rings × this) |
-| `Radius` | 0–1 | `radius` — NDC radius of the outermost ring (≤1) |
-| `Angle offset` | 0–1 | `ring_angle_offset` — radians added per ring so rings don't align radially |
-| `pattern_preview` | — | scan-pattern preview drawn as white points on black |
+| `Channels` | 1–256 | `channel_count` — elevation layers |
+| `Azimuth steps` | 1–2048 | `azimuth_steps` — columns per revolution (total = Channels × this) |
+| `Elevation min` / `max` | -90–90 | `elevation_min` / `elevation_max` — scan band (deg); min is kept ≤ max |
+| `Az. stagger` | 0–1 | `channel_azimuth_offset` — degrees added per channel so columns don't align vertically |
+| `Scan Hz` | 0–30 | `scan_hz` — motor revolutions per second (no rebuild) |
+| `Sweep` | — | `sweep` — per-frame sector update on/off (no rebuild) |
+| `pattern_preview` | — | equirectangular plot (x = azimuth 0–360°, y = elevation -90–90°), white points on black |
 
 ### Recording
 Snapshots the point buffer via **async GPU readback** and saves one **binary PLY** (x/y/z float + id uint)
@@ -183,22 +196,24 @@ wall-clock time so it does not affect app fps.
 | status | — | recording state + number of captured frames |
 
 ### Debug (LiDAR view)
-Shows a texture that blits the LiDAR `id_rt` through the `lidar/id_debug` material (to inspect the sensor-view
-ID/depth).
+Shows a texture that blits the LiDAR `id_rt` (the +Z face) through the `lidar/id_debug` material (to inspect
+the sensor-view ID/range; `_Far` on the material is the range mapped to white).
 
 ---
 
 ## 6. What updates in real time
 
-- **Sensor move/rotate/FoV** — reflected instantly via the camera matrices each frame.
+- **Sensor move/rotate** — reflected instantly via the face camera matrices each frame.
 - **Object movement / bone animation** — instant, because the sensor-view pass and reconstruction rerun every
-  frame.
-- **Scan pattern change** — ray buffer regenerated via `rebuild()`.
+  frame (with `sweep` on, within the swept sector).
+- **Scan pattern change** — ray buffer regenerated via `rebuild()`; the point buffer is cleared and the
+  needed faces re-enabled.
+- **Scan rate / sweep** — take effect on the next frame.
 - **Solid↔points toggle** — instant, decided at integration-draw time (no recomputation).
 - **Object color/size** — the per-ID style buffer is refreshed every frame.
 
-Only `map_resolution` (id_rt resolution) is not runtime-changeable (it needs id_rt recreation) — currently
-only the pattern parameters are live.
+Only `map_resolution` (per-face RT resolution) and the face camera settings (`scan_mask`, `near`, `far`,
+`camera_depth`) are not runtime-changeable (they are applied when the faces are created).
 
 ---
 
@@ -210,10 +225,10 @@ Visual elements you can recognize by looking:
   distance colormap (default near=blue → far=red).
 - **Point size** — fixed screen-size squares regardless of camera distance. Per-object in per-object mode,
   global in depth-map mode.
-- **Pattern preview** — the black-background / white-point image in the Pattern section matches the actual
-  scan-ray distribution.
+- **Pattern preview** — the black-background / white-point equirectangular plot in the Pattern section shows
+  the scan band; at sensor-class density it fills solid.
 - **Hover marker** — hovering a Receivers row shows a yellow-bordered name box on that object.
-- **Debug view** — the sensor-view ID/depth map.
+- **Debug view** — the +Z face's ID/range map.
 
 ---
 

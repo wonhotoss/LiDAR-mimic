@@ -5,10 +5,10 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 
 namespace LiDARMimic {
-    // LiDAR camera: writes per-object id + NDC depth into id_rt.
+    // LiDAR face cameras: write per-object id + range into the device's face RTs.
     // Other cameras: draws the reconstructed pc_buffer as fixed-size point splats into the main target.
     public class lidar_render_feature : ScriptableRendererFeature {
-        [Tooltip("Assign the lidar/id_write shader (LiDAR pass: writes per-object id + NDC depth).")]
+        [Tooltip("Assign the lidar/id_write shader (LiDAR pass: writes per-object id + range).")]
         public Shader write_shader;
         [Tooltip("Assign the lidar/point shader (integration pass: draws the reconstructed points).")]
         public Shader point_shader;
@@ -75,7 +75,8 @@ namespace LiDARMimic {
         }
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData data) {
-            if (data.cameraData.camera.GetComponent<lidar>() != null) {
+            var cam = data.cameraData.camera;
+            if (lidar_registry.devices.Any(d => d.faces.Contains(cam))) {
                 renderer.EnqueuePass(id);
             } else {
                 var device = lidar_registry.devices.FirstOrDefault();

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace LiDARMimic {
-    // Debug helper invoked from the control panel's Debug section (lidar_diagnostics.run). Reads id_rt and
+    // Debug helper invoked from the control panel's Debug section (lidar_diagnostics.run). Reads id_rt (+Z face) and
     // pc_buffer back and logs a verdict: whether the failure is the sensor pass (Stage A, id_rt), the compute
     // reconstruction (Stage B, pc_buffer), or the integration render (Stage C). Static + primitive types +
     // method-group callbacks (no LINQ / HashSet / StringBuilder / capturing lambdas) to stay IL2CPP/WASM-safe.
@@ -33,7 +33,7 @@ namespace LiDARMimic {
             }
         }
 
-        // id_rt is RGFloat: x = id (should be a small integer), y = NDC depth. If x is mostly non-integer /
+        // id_rt (the +Z face) is RGFloat: x = id (should be a small integer), y = range (m). If x is mostly non-integer /
         // continuous, id_rt holds leaked shaded color instead of ids (the id_write override did not overwrite).
         static void on_id(AsyncGPUReadbackRequest req) {
             id_busy = false;
@@ -41,7 +41,7 @@ namespace LiDARMimic {
                 id_state = id_result.readback_failed;
                 id_detail = "";
             } else {
-                var data = req.GetData<Vector2>(); // x = R (id), y = G (NDC depth)
+                var data = req.GetData<Vector2>(); // x = R (id), y = G (range)
                 var n = 0;
                 var nonzero = 0;
                 var integer_like = 0;

@@ -60,10 +60,9 @@ advantages are: **① visibility is solved once and shared by all rays**, **② 
 `O(1)`**, **③ it uses fixed-function rasterizer/depth-test hardware directly**, and **④ there is no
 persistent data structure to keep in sync under animation**.
 
-These advantages matter most when there are **many rays (high density), objects move or deform, and a single
-forward field of view suffices**. Conversely, when rays number only in the hundreds, or 360°/spherical
-coverage is required, or quantization-free physical accuracy is the goal, true (GPU) raycasting is a better
-fit.
+These advantages matter most when there are **many rays (high density) and objects move or deform**.
+Conversely, when rays number only in the hundreds, or quantization-free physical accuracy or per-ray timing
+(motor skew, see *Limitations*) is the goal, true (GPU) raycasting is a better fit.
 
 ---
 
@@ -74,43 +73,52 @@ Rendering is split into three logical passes.
 ```mermaid
 flowchart LR
     subgraph P1["1 · Sensor-view pass"]
-        A["Rasterize the scene<br/>from the sensor's view<br/>→ write depth + object ID<br/>into an offscreen buffer"]
+        A["Rasterize the scene<br/>from the sensor origin<br/>into 6 cube faces (90° each)<br/>→ range + object ID"]
     end
     subgraph P2["2 · Reconstruction pass (compute)"]
-        B["Per scan ray:<br/>look up depth·ID →<br/>unproject to world space<br/>→ point buffer"]
+        B["Per scan ray (a direction):<br/>pick the face, look up range·ID →<br/>origin + dir × range<br/>→ point buffer"]
     end
     subgraph P3["3 · Integration render pass"]
         C["Splat the point buffer<br/>onto the main view<br/>(shares the main depth buffer<br/>→ occlusion)"]
     end
-    A -->|"depth · ID buffer"| B
+    A -->|"range · ID cube"| B
     B -->|"point buffer<br/>(GPU, no readback)"| C
     C -.->|"optional: async readback<br/>→ real data"| D["PLY / coordinate data"]
 ```
 
-### 1. Sensor-view pass (depth prepass)
+### 1. Sensor-view pass (range prepass)
 
-The sensor is just a camera (with a position, orientation, and FoV). From this viewpoint the scene is
-rasterized into an offscreen buffer. Two values are written per pixel:
+The sensor is a point with an orientation. Around it sit six 90° perspective cameras forming a cube, exactly
+the way a reflection probe is captured, and each rasterizes the scene into its own offscreen face. Two values
+are written per pixel:
 
-- **Depth** — the distance to the nearest surface in that direction (in normalized-device depth).
+- **Range** — the distance from the sensor to the nearest surface in that direction (metres).
 - **Object ID** — which object that surface came from.
 
-The nearest surface is decided by the hardware depth test. So this single raster **resolves the visibility
-of all scan rays at once**. All opaque objects in the scene are drawn, so even objects that will not become
-points still act as occluders.
+The nearest surface is decided by the hardware depth test. So these rasters **resolve the visibility of all
+scan rays at once**, in every direction. All opaque objects in the scene are drawn, so even objects that will
+not become points still act as occluders. Faces that no scan ray selects are skipped (a band that reaches the
+zenith but not the nadir needs five).
 
 ### 2. Reconstruction pass (GPU compute)
 
-The scan pattern is the set of "rays leaving the sensor," represented as an array of 2D coordinates in the
-sensor's projection space (normalized XY). For each ray, the compute pass:
+The scan pattern is the set of "rays leaving the sensor," represented as an array of unit directions in the
+sensor's frame, laid out like a spinning sensor: elevation channels × azimuth columns, column-major. For each
+ray, the compute pass:
 
-1. Converts the ray's projection XY into a texel coordinate in the offscreen buffer and **looks up depth and
-   ID** (point sample, no interpolation — to avoid silhouette contamination).
-2. **Unprojects** (XY, looked-up depth) through the inverse view-projection into **world space**.
+1. Picks the cube face by the direction's dominant axis, projects the direction into that face to a texel
+   coordinate, and **looks up range and ID** (point sample, no interpolation — to avoid silhouette
+   contamination).
+2. Reconstructs the **world position** as `sensor origin + direction × range`.
 3. Writes `{ world position, object ID }` into the **point buffer**.
 
 That result is the point cloud. If a ray met no surface, the background ID (0) remains and is filtered out
 automatically later. The buffer never comes down to the CPU — it stays on the GPU.
+
+**Sweep.** A spinning sensor does not see a whole revolution at once. In realtime, each frame reconstructs
+only the azimuth sector the motor swept since the last frame (scan rate × frame time); the rest of the
+buffer keeps the points from earlier frames. A full revolution therefore builds up over several frames, as it
+does on a real sensor. The sweep can be turned off to refresh the whole buffer every frame.
 
 ### 3. Integration render pass
 
@@ -139,8 +147,9 @@ reflected directly.
   bandwidth or memory round-trips.
 - **Natural occlusion.** Inter-object occlusion and self-occlusion are both handled by the depth test.
   Ordinary-rendered objects and point-rendered objects correctly occlude each other in one scene.
-- **Real-time adjustment.** The sensor's position/orientation/FoV and the scan pattern's density/shape can be
-  changed at runtime. When the pattern changes, only the ray buffer needs refilling.
+- **Real-time adjustment.** The sensor's position/orientation, the scan band (elevation range), channel
+  count, azimuth resolution and scan rate can be changed at runtime. When the pattern changes, only the ray
+  buffer needs refilling.
 - **Per-object differentiation.** You can control per object whether it renders as solid / points / both, and
   how each object's point color and size are set.
 - **Optional real data.** The goal is visual, but the same point buffer can be read back (asynchronously,
@@ -151,17 +160,21 @@ reflected directly.
 
 ## Limitations and characteristics
 
-- **Single perspective FoV (<180°).** The premise of the `O(1)` lookup is that scan rays lie on a single
-  projection grid. Because of this, a 360°/spinning LiDAR cannot be represented directly by this structure
-  (it would need multiple sensors or a separate design).
-- **Depth quantization.** If the offscreen buffer resolution is low relative to the ray density, several rays
-  sample the same texel and point placement becomes stair-step quantized. Keeping the buffer resolution at or
-  above the ray density resolves this.
+- **Frame-granular time.** The scene is rasterized once per frame, so every ray of a frame's sector sees the
+  scene at the same instant; the motor's per-column timing (111 µs per 0.4° column on a 128-channel sensor)
+  is not modelled. Modelling it would mean re-rasterizing per column, and the method's advantage is
+  amortization — one raster shared by all rays. Per column that ratio drops to 128 rays per raster, where
+  plain raycasting is cheaper and exact. Sub-frame motion skew and per-point timestamps are therefore
+  deliberately out of scope: that regime belongs to a raycaster and machine fan-out, not to this pipeline.
+- **Angular quantization.** A ray reads the range of the texel its direction falls in, so points sit on the
+  surface along slightly quantized directions. At 512² per face that is 0.18° per texel, the same order as a
+  real beam's divergence; keep the face resolution at or above the ray spacing.
 - **Silhouette flying pixels.** At object boundaries, a ray may produce a point that "flies" between the
   front and back surfaces. This is an artifact present in real LiDAR too, so it can be accepted as authentic.
-- **Temporal shimmer.** Because rays are fixed in the sensor's projection space, points can appear to crawl
-  over surfaces when objects or the sensor move (physically correct for a stationary sensor's view, but it
-  may be visually distracting).
+- **Temporal shimmer.** Because rays are fixed in the sensor's frame, points can appear to crawl over
+  surfaces when objects or the sensor move (physically correct for a stationary sensor's view, but it may be
+  visually distracting). With the sweep on, a moving object also shows a step where the current sector meets
+  the previous one — the same tearing a real spinning scan has.
 
 ---
 

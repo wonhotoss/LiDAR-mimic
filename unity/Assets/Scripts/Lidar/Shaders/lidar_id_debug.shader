@@ -1,6 +1,9 @@
 Shader "lidar/id_debug" {
-    // Visualizes the LiDAR map: scene as depth grayscale, receivers (id > 0) tinted by a per-id hue. Verification aid.
-    Properties { _MainTex ("tex", 2D) = "black" {} }
+    // Visualizes one LiDAR face: scene as range grayscale, receivers (id > 0) tinted by a per-id hue. Verification aid.
+    Properties {
+        _MainTex ("tex", 2D) = "black" {}
+        _Far ("range (m) mapped to white", Float) = 50
+    }
 
     SubShader {
         Tags { "RenderType" = "Opaque" }
@@ -16,6 +19,7 @@ Shader "lidar/id_debug" {
             #include "UnityCG.cginc"
 
             sampler2D _MainTex;
+            float _Far;
 
             struct v_out { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; };
 
@@ -27,10 +31,10 @@ Shader "lidar/id_debug" {
             }
 
             fixed4 frag(v_out i) : SV_Target {
-                float2 s = tex2D(_MainTex, i.uv).rg; // r = id, g = NDC depth
+                float2 s = tex2D(_MainTex, i.uv).rg; // r = id, g = range (m)
                 float h = frac(s.r * 0.61803399);
                 float3 hue = saturate(abs(frac(h + float3(0, 2.0 / 3.0, 1.0 / 3.0)) * 6 - 3) - 1);
-                float3 gray = s.g.xxx * 0.6; // scene context (near surfaces brighter under reversed-Z)
+                float3 gray = saturate(s.g / _Far).xxx * 0.6; // scene context (far surfaces brighter)
                 return fixed4(s.r < 0.5 ? gray : hue, 1);
             }
             ENDCG
